@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sofía & Camilo - Nuestra Boda</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:wght@400;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Sofía & Camilo</h2>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#historia" class="nav-link">Nuestra Historia</a></li>
+                <li><a href="#cuando-donde" class="nav-link">Cuándo y Dónde</a></li>
+                <li><a href="#regalos" class="nav-link">Regalos</a></li>
+                <li><a href="#rsvp" class="nav-link">Confirmar Asistencia</a></li>
+                <li><a href="#galeria" class="nav-link">Galería</a></li>
+                <li><a href="#recomendaciones" class="nav-link">Recomendaciones</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <div class="hero-background">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Sofía & Camilo</h1>
+                <p class="hero-subtitle">Nos casamos</p>
+                <p class="hero-date">9 de Enero, 2026</p>
+                <p class="hero-location">Bogotá, Colombia</p>
+                
+                <!-- Countdown Timer -->
+                <div class="countdown-container">
+                    <div class="countdown" id="countdown">
+                        <div class="countdown-item">
+                            <span id="days">0</span>
+                            <p>Días</p>
+                        </div>
+                        <div class="countdown-item">
+                            <span id="hours">0</span>
+                            <p>Horas</p>
+                        </div>
+                        <div class="countdown-item">
+                            <span id="minutes">0</span>
+                            <p>Minutos</p>
+                        </div>
+                        <div class="countdown-item">
+                            <span id="seconds">0</span>
+                            <p>Segundos</p>
+                        </div>
+                    </div>
+                    <p class="countdown-message">¡Faltan pocos días para nuestro gran día!</p>
+                </div>
+                
+                <button class="cta-button" onclick="scrollToSection('rsvp')">
+                    Confirmar Asistencia
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nuestra Historia -->
+    <section id="historia" class="story">
+        <div class="container">
+            <h2 class="section-title">Nuestra Historia</h2>
+            
+            <div class="story-item">
+                <div class="story-text">
+                    <h3>El Primer Encuentro</h3>
+                    <p>Nos conocimos en Bumble en una hermosa tarde de primavera. La primera cita fue mágica - Camilo robó un beso y Sofía se rió con esa risa que lo conquistó para siempre. Desde ese momento supimos que algo especial había comenzado.</p>
+                </div>
+                <div class="story-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-heart"></i>
+                        <p>Primera cita</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="story-item reverse">
+                <div class="story-text">
+                    <h3>La Indignación que Confirmó Todo</h3>
+                    <p>A las 5 PM del día siguiente, Sofía se indignó porque Camilo aún no le había escrito. Esa indignación delataba el interés mutuo que ambos sentían desde el primer momento. Fue entonces cuando supimos que esto iba en serio.</p>
+                </div>
+                <div class="story-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-mobile-alt"></i>
+                        <p>Esperando el mensaje</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="story-item">
+                <div class="story-text">
+                    <h3>Juntos Somos Más Fuertes</h3>
+                    <p>En dos años y medio hemos viajado a países, entrenado maratones, cambiado trabajos y nos mudamos a México. Cada desafío nos ha demostrado que juntos somos más fuertes, más valientes y más felices.</p>
+                </div>
+                <div class="story-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-globe-americas"></i>
+                        <p>Nuestros viajes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cuándo y Dónde -->
+    <section id="cuando-donde" class="when-where">
+        <div class="container">
+            <h2 class="section-title">Cuándo y Dónde</h2>
+            
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-icon">
+                        <i class="fas fa-church"></i>
+                    </div>
+                    <h3>Ceremonia</h3>
+                    <div class="event-details">
+                        <p class="event-date">Viernes 9 de enero de 2026</p>
+                        <p class="event-time">1:30 PM</p>
+                        <p class="event-location">Gimnasio Moderno</p>
+                        <p class="event-address">Carrera 9 # 74 – 99, Bogotá</p>
+                    </div>
+                    <div class="map-container">
+                        <div class="map-placeholder" id="ceremony-map">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p>Mapa de la Ceremonia</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-icon">
+                        <i class="fas fa-glass-cheers"></i>
+                    </div>
+                    <h3>Recepción</h3>
+                    <div class="event-details">
+                        <p class="event-date">Viernes 9 de enero de 2026</p>
+                        <p class="event-time">4:00 PM – 2:00 AM</p>
+                        <p class="event-location">La Pradera de Potosí</p>
+                        <p class="event-address">Km 19 vía La Calera – Sopó (Cundinamarca)</p>
+                    </div>
+                    <div class="map-container">
+                        <div class="map-placeholder" id="reception-map">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p>Mapa de la Recepción</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mesa de Regalos -->
+    <section id="regalos" class="gifts">
+        <div class="container">
+            <h2 class="section-title">Mesa de Regalos</h2>
+            <div class="gifts-intro">
+                <p>El mejor regalo es compartir este día con nosotros. Si además quieres apoyarnos, cada aporte se destinará directamente al regalo que elijas. Cada peso será invertido en ese sueño específico.</p>
+                <div class="gifts-alternative">
+                    <div class="alternative-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <p><strong>💝 ¿Prefieres algo más tradicional?</strong> También tendremos nuestra urna de lluvia de regalos el día de la boda, para que puedas ayudarnos de la forma que te resulte más cómoda.</p>
+                </div>
+            </div>
+            
+            <div class="gifts-grid">
+                <div class="gift-card">
+                    <div class="gift-image">
+                        <img src="assets/images/placeholder-travel.jpg" alt="Luna de Miel" class="gift-photo">
+                        <div class="gift-icon-overlay">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                    </div>
+                    <h3>Luna de Miel</h3>
+                    <p class="gift-description">Nuestro viaje soñado a Europa</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="45"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span class="current-amount">$2,250,000</span>
+                            <span class="target-amount">de $5,000,000</span>
+                        </div>
+                    </div>
+                    <button class="gift-button" onclick="openGiftModal('luna-miel')">Contribuir</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-image">
+                        <img src="assets/images/placeholder-furniture.jpg" alt="Muebles para el Hogar" class="gift-photo">
+                        <div class="gift-icon-overlay">
+                            <i class="fas fa-home"></i>
+                        </div>
+                    </div>
+                    <h3>Muebles para el Hogar</h3>
+                    <p class="gift-description">Decorar nuestro primer hogar juntos</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="30"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span class="current-amount">$1,500,000</span>
+                            <span class="target-amount">de $5,000,000</span>
+                        </div>
+                    </div>
+                    <button class="gift-button" onclick="openGiftModal('muebles')">Contribuir</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-image">
+                        <img src="assets/images/placeholder-dishes.jpg" alt="Vajilla Completa" class="gift-photo">
+                        <div class="gift-icon-overlay">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                    </div>
+                    <h3>Vajilla Completa</h3>
+                    <p class="gift-description">Para nuestras cenas románticas</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="60"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span class="current-amount">$600,000</span>
+                            <span class="target-amount">de $1,000,000</span>
+                        </div>
+                    </div>
+                    <button class="gift-button" onclick="openGiftModal('vajilla')">Contribuir</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-image">
+                        <img src="assets/images/placeholder-bedding.jpg" alt="Ropa de Cama" class="gift-photo">
+                        <div class="gift-icon-overlay">
+                            <i class="fas fa-bed"></i>
+                        </div>
+                    </div>
+                    <h3>Ropa de Cama</h3>
+                    <p class="gift-description">Sábanas y almohadas de calidad</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="80"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span class="current-amount">$400,000</span>
+                            <span class="target-amount">de $500,000</span>
+                        </div>
+                    </div>
+                    <button class="gift-button" onclick="openGiftModal('ropa-cama')">Contribuir</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-image">
+                        <img src="assets/images/placeholder-appliances.jpg" alt="Electrodomésticos" class="gift-photo">
+                        <div class="gift-icon-overlay">
+                            <i class="fas fa-tv"></i>
+                        </div>
+                    </div>
+                    <h3>Electrodomésticos</h3>
+                    <p class="gift-description">Nevera, lavadora y más</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="25"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span class="current-amount">$1,250,000</span>
+                            <span class="target-amount">de $5,000,000</span>
+                        </div>
+                    </div>
+                    <button class="gift-button" onclick="openGiftModal('electrodomesticos')">Contribuir</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-image">
+                        <img src="assets/images/placeholder-car.jpg" alt="Fondo para Auto" class="gift-photo">
+                        <div class="gift-icon-overlay">
+                            <i class="fas fa-car"></i>
+                        </div>
+                    </div>
+                    <h3>Fondo para Auto</h3>
+                    <p class="gift-description">Nuestro primer carro juntos</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="10"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span class="current-amount">$2,000,000</span>
+                            <span class="target-amount">de $20,000,000</span>
+                        </div>
+                    </div>
+                    <button class="gift-button" onclick="openGiftModal('auto')">Contribuir</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-image">
+                        <img src="assets/images/placeholder-gym.jpg" alt="Equipo de Ejercicio" class="gift-photo">
+                        <div class="gift-icon-overlay">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                    </div>
+                    <h3>Equipo de Ejercicio</h3>
+                    <p class="gift-description">Gimnasio en casa</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="70"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span class="current-amount">$700,000</span>
+                            <span class="target-amount">de $1,000,000</span>
+                        </div>
+                    </div>
+                    <button class="gift-button" onclick="openGiftModal('ejercicio')">Contribuir</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-image">
+                        <img src="assets/images/placeholder-books.jpg" alt="Biblioteca" class="gift-photo">
+                        <div class="gift-icon-overlay">
+                            <i class="fas fa-book"></i>
+                        </div>
+                    </div>
+                    <h3>Biblioteca</h3>
+                    <p class="gift-description">Libros para nuestro rincón de lectura</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="90"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span class="current-amount">$450,000</span>
+                            <span class="target-amount">de $500,000</span>
+                        </div>
+                    </div>
+                    <button class="gift-button" onclick="openGiftModal('biblioteca')">Contribuir</button>
+                </div>
+
+                <div class="gift-card">
+                    <div class="gift-image">
+                        <img src="assets/images/placeholder-general.jpg" alt="Fondo General" class="gift-photo">
+                        <div class="gift-icon-overlay">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                    </div>
+                    <h3>Fondo General</h3>
+                    <p class="gift-description">Para cualquier sorpresa que tengamos</p>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" data-progress="35"></div>
+                        </div>
+                        <div class="progress-text">
+                            <span class="current-amount">$1,750,000</span>
+                            <span class="target-amount">de $5,000,000</span>
+                        </div>
+                    </div>
+                    <button class="gift-button" onclick="openGiftModal('fondo-general')">Contribuir</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP -->
+    <section id="rsvp" class="rsvp">
+        <div class="container">
+            <h2 class="section-title">Confirmación de Asistencia</h2>
+            <p class="rsvp-subtitle">Por favor, confirma tu asistencia antes del 1 de Diciembre, 2025</p>
+            
+            <form class="rsvp-form" id="rsvpForm" netlify data-netlify="true" name="rsvp-form">
+                <div class="form-group">
+                    <label for="name">Nombre Completo *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Correo Electrónico *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Teléfono *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label>¿Asistirás a nuestra boda? *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="attending" value="yes" required>
+                            <span>¡Sí, estaré ahí!</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="attending" value="no" required>
+                            <span>No podré asistir</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Opciones adicionales para quienes asisten -->
+                <div id="additional-options" class="additional-options" style="display: none;">
+                    <div class="form-group">
+                        <label for="menu">Selecciona tu plato preferido</label>
+                        <select id="menu" name="menu">
+                            <option value="">Selecciona tu opción...</option>
+                            <option value="carne">Carne a la parrilla</option>
+                            <option value="pollo">Pollo en salsa</option>
+                            <option value="pescado">Pescado del día</option>
+                            <option value="vegetariano">Opción vegetariana</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="transport" value="yes">
+                            <span>Solicito cupo en transporte asistido en vans hacia la recepción en La Pradera</span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="song">Sugiere una canción infaltable para la fiesta (opcional)</label>
+                        <input type="text" id="song" name="song" placeholder="Nombre de la canción y artista">
+                    </div>
+                </div>
+
+                <!-- Mensaje para los novios - disponible para todos -->
+                <div class="form-group">
+                    <label for="message">Mensaje para los novios</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Déjanos un mensaje... (opcional)"></textarea>
+                </div>
+
+                <div class="important-message">
+                    <div class="message-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <p><strong>Importante:</strong> Si fuiste invitado con pareja, por favor asegúrate de que tu pareja también complete la confirmación de asistencia.</p>
+                </div>
+
+                <button type="submit" class="submit-btn">Enviar Confirmación</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Galería -->
+    <section id="galeria" class="gallery">
+        <div class="container">
+            <h2 class="section-title">Galería</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 1</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 2</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 3</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 4</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 5</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 6</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 7</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 8</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 9</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 10</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 11</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 12</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 13</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 14</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 15</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <div class="image-placeholder">
+                        <i class="fas fa-camera"></i>
+                        <p>Foto 16</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recomendaciones -->
+    <section id="recomendaciones" class="recommendations">
+        <div class="container">
+            <h2 class="section-title">Recomendaciones</h2>
+            
+            <div class="recommendations-grid">
+                <div class="recommendation-card">
+                    <div class="recommendation-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <h3>Hospedaje</h3>
+                    <div class="recommendation-content">
+                        <h4>Hoteles Recomendados</h4>
+                        <ul>
+                            <li><strong>Hotel Tequendama</strong> - Centro de Bogotá</li>
+                            <li><strong>Hotel Casa Medina</strong> - Zona Rosa</li>
+                            <li><strong>Hotel Sofitel Victoria Regia</strong> - Chapinero</li>
+                        </ul>
+                        <p class="recommendation-note">Todos cerca de la ceremonia y con fácil acceso al transporte hacia la recepción.</p>
+                    </div>
+                </div>
+
+                <div class="recommendation-card">
+                    <div class="recommendation-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3>Transporte</h3>
+                    <div class="recommendation-content">
+                        <h4>Opciones de Movilidad</h4>
+                        <ul>
+                            <li><strong>Uber/Cabify</strong> - Para moverse por la ciudad</li>
+                            <li><strong>TransMilenio</strong> - Sistema de transporte público</li>
+                            <li><strong>Transporte Asistido</strong> - Vans desde ceremonia a recepción</li>
+                        </ul>
+                        <p class="recommendation-note">Al confirmar asistencia, puedes solicitar cupo en el transporte asistido.</p>
+                    </div>
+                </div>
+
+                <div class="recommendation-card">
+                    <div class="recommendation-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Turismo</h3>
+                    <div class="recommendation-content">
+                        <h4>Lugares para Visitar</h4>
+                        <ul>
+                            <li><strong>Monserrate</strong> - Vista panorámica de Bogotá</li>
+                            <li><strong>Museo del Oro</strong> - Cultura precolombina</li>
+                            <li><strong>La Candelaria</strong> - Centro histórico</li>
+                            <li><strong>Usaquén</strong> - Mercado de artesanías</li>
+                        </ul>
+                        <p class="recommendation-note">Perfectos para aprovechar tu visita a Bogotá.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Sofía & Camilo. Hecho con ❤️ para nuestro gran día.</p>
+        </div>
+    </footer>
+
+    <!-- Modal para Regalos -->
+    <div id="giftModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeGiftModal()">&times;</span>
+            <h3 id="modalTitle">Contribuir al Regalo</h3>
+            <form id="giftForm" netlify data-netlify="true" name="gift-form">
+                <div class="form-group">
+                    <label for="contributorName">Tu Nombre *</label>
+                    <input type="text" id="contributorName" name="contributorName" required>
+                </div>
+                <div class="form-group">
+                    <label for="contributorEmail">Tu Email *</label>
+                    <input type="email" id="contributorEmail" name="contributorEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="contributionAmount">Monto de tu Contribución *</label>
+                    <input type="number" id="contributionAmount" name="contributionAmount" required min="10000" step="10000">
+                </div>
+                <div class="form-group">
+                    <label for="contributionMessage">Mensaje (opcional)</label>
+                    <textarea id="contributionMessage" name="contributionMessage" rows="3"></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" onclick="closeGiftModal()" class="cancel-btn">Cancelar</button>
+                    <button type="submit" class="submit-btn">Registrar Contribución</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

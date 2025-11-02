@@ -1,0 +1,27 @@
+{
+  "name": "sofia-camilo-wedding-website",
+  "version": "1.0.0",
+  "description": "Modern wedding website for Sofía & Camilo",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "npx live-server --port=8000",
+    "build": "echo 'Static site - no build needed'",
+    "test": "echo 'No tests configured yet'",
+    "lint": "echo 'No linting configured yet'"
+  },
+  "keywords": [
+    "wedding",
+    "website",
+    "html",
+    "css",
+    "javascript",
+    "responsive"
+  ],
+  "author": "Camilo Otoya <camilootoya@habi.co>",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
+
