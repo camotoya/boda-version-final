@@ -1,3 +1,7 @@
+// Google Sheets Configuration
+// IMPORTANTE: Reemplaza esta URL con la URL de tu Google Apps Script después de seguir las instrucciones en GOOGLE_SHEETS_SETUP.md
+const GOOGLE_SHEETS_URL = 'TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI';
+
 // Navigation Toggle (Desktop and Mobile)
 const hamburger = document.getElementById('hamburger');
 const menuToggle = document.getElementById('menu-toggle');
@@ -244,26 +248,48 @@ rsvpForm.addEventListener('submit', async (e) => {
     submitBtn.disabled = true;
     
     try {
-        // Enviar a Netlify Forms
-        const netlifyFormData = new FormData(rsvpForm);
-        netlifyFormData.append('form-name', 'rsvp-form');
+        // Validar que la URL de Google Sheets esté configurada
+        if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL === 'TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI') {
+            throw new Error('Por favor, configura la URL de Google Sheets en script.js. Consulta GOOGLE_SHEETS_SETUP.md para más información.');
+        }
+
+        // Preparar datos para Google Sheets
+        const payload = {
+            name: data.name || '',
+            email: data.email || '',
+            phone: data.phone || '',
+            attending: data.attending || '',
+            menu: data.menu || '',
+            transport: data.transport || '',
+            song: data.song || '',
+            message: data.message || ''
+        };
         
-        const netlifyResponse = await fetch('/', {
+        // Enviar a Google Sheets via Google Apps Script
+        const response = await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
-            body: netlifyFormData
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
         });
         
-        if (netlifyResponse.ok) {
-            console.log('✅ RSVP guardado en Netlify Forms');
-            
-            if (data.attending === 'yes') {
-                showNotification('¡Gracias por confirmar tu asistencia! Te esperamos en nuestro gran día. 🎉', 'success');
-                createConfetti();
+        if (response.ok) {
+            const result = await response.json();
+            if (result.result === 'success') {
+                console.log('✅ RSVP guardado en Google Sheets (fila:', result.row, ')');
             } else {
-                showNotification('Entendemos que no puedas asistir. ¡Gracias por tu mensaje! 💕', 'info');
+                throw new Error(result.error || 'Error desconocido');
             }
         } else {
-            throw new Error('Error al enviar formulario');
+            throw new Error('Error HTTP: ' + response.status);
+        }
+        
+        if (data.attending === 'yes') {
+            showNotification('¡Gracias por confirmar tu asistencia! Te esperamos en nuestro gran día. 🎉', 'success');
+            createConfetti();
+        } else {
+            showNotification('Entendemos que no puedas asistir. ¡Gracias por tu mensaje! 💕', 'info');
         }
         
     } catch (error) {
