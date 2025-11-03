@@ -100,9 +100,19 @@ function doPost(e) {
         const data = JSON.parse(e.postData.contents || '{}');
         
         // Determinar si es RSVP o Gift basado en formType
-        if (data.formType === 'gift') {
+        // Verificamos explícitamente si es 'gift' o si tiene campos de regalo
+        const isGiftForm = data.formType === 'gift' || 
+                          (data.contributorName && data.contributionAmount !== undefined);
+        
+        if (isGiftForm) {
             // Procesar formulario de regalos
             const sheet = doc.getSheetByName(GIFTS_SHEET_NAME);
+            
+            // Verificar que la hoja existe
+            if (!sheet) {
+                throw new Error('Hoja "Gifts Responses" no encontrada. Ejecuta initialSetup() primero.');
+            }
+            
             const nextRow = sheet.getLastRow() + 1;
             
             const newRow = [
@@ -126,6 +136,12 @@ function doPost(e) {
         } else {
             // Procesar formulario RSVP (por defecto)
             const sheet = doc.getSheetByName(RSVP_SHEET_NAME);
+            
+            // Verificar que la hoja existe
+            if (!sheet) {
+                throw new Error('Hoja "RSVP Responses" no encontrada. Ejecuta initialSetup() primero.');
+            }
+            
             const nextRow = sheet.getLastRow() + 1;
             
             const newRow = [
