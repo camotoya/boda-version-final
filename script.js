@@ -162,9 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize progress bars
     initializeProgressBars();
-    
-    // Initialize Google Maps if API key is configured
-    initGoogleMaps();
 });
 
 // Initialize progress bars with animation
@@ -258,12 +255,12 @@ function openGiftModal(giftType) {
     
     // Set modal title based on gift type
     const giftTitles = {
-        'luna-miel': 'Luna de Miel',
-        'muebles': 'Muebles para el Hogar',
-        'vajilla': 'Vajilla Completa',
-        'ropa-cama': 'Ropa de Cama',
-        'electrodomesticos': 'Electrodomésticos',
-        'fondo-general': 'Fondo General'
+        'luna-miel': 'Tiquetes de Luna de Miel',
+        'muebles': 'Sofás para la sala',
+        'vajilla': 'Vajilla & Cristalería',
+        'ropa-cama': 'Ropa de cama & baño (blancos)',
+        'electrodomesticos': 'Electrodomésticos & Limpieza del hogar',
+        'fondo-general': 'Aporte general'
     };
     
     modalTitle.textContent = `Contribuir a ${giftTitles[giftType] || 'el Regalo'}`;
@@ -280,12 +277,12 @@ function closeGiftModal() {
 
 // Gift targets - Update these with your actual targets
 const GIFT_TARGETS = {
-    'Luna de Miel': 5000000,
-    'Muebles para el Hogar': 5000000,
-    'Vajilla Completa': 1000000,
-    'Ropa de Cama': 500000,
-    'Electrodomésticos': 5000000,
-    'Fondo General': 5000000
+    'Tiquetes de Luna de Miel': 5000000,
+    'Sofás para la sala': 5000000,
+    'Vajilla & Cristalería': 1000000,
+    'Ropa de cama & baño (blancos)': 500000,
+    'Electrodomésticos & Limpieza del hogar': 5000000,
+    'Aporte general': 5000000
 };
 
 // Gift Form submission - Simplified: Only Netlify Forms + Update Progress Bar
@@ -311,14 +308,14 @@ document.getElementById('giftForm').addEventListener('submit', async (e) => {
         const modal = document.getElementById('giftModal');
         const giftTypeKey = modal.dataset.giftType;
         const giftTitles = {
-            'luna-miel': 'Luna de Miel',
-            'muebles': 'Muebles para el Hogar',
-            'vajilla': 'Vajilla Completa',
-            'ropa-cama': 'Ropa de Cama',
-            'electrodomesticos': 'Electrodomésticos',
-            'fondo-general': 'Fondo General'
+            'luna-miel': 'Tiquetes de Luna de Miel',
+            'muebles': 'Sofás para la sala',
+            'vajilla': 'Vajilla & Cristalería',
+            'ropa-cama': 'Ropa de cama & baño (blancos)',
+            'electrodomesticos': 'Electrodomésticos & Limpieza del hogar',
+            'fondo-general': 'Aporte general'
         };
-        const giftType = giftTitles[giftTypeKey] || 'Fondo General';
+        const giftType = giftTitles[giftTypeKey] || 'Aporte general';
         
         // Enviar a Netlify Forms
         const netlifyFormData = new FormData(e.target);
@@ -361,30 +358,27 @@ function updateProgressBarForGift(giftType, contributionAmount) {
         const cardTitle = card.querySelector('h3').textContent;
         if (cardTitle === giftType) {
             const progressBar = card.querySelector('.progress-fill');
-            const currentAmountElement = card.querySelector('.current-amount');
-            const targetAmountElement = card.querySelector('.target-amount');
+            const progressPercentageElement = card.querySelector('.progress-percentage');
             
-            if (progressBar && currentAmountElement) {
-                // Get current values
-                const currentText = currentAmountElement.textContent;
-                const currentAmount = parseInt(currentText.replace(/[^0-9]/g, '')) || 0;
-                const newAmount = currentAmount + contributionAmount;
+            if (progressBar && progressPercentageElement) {
+                // Get current progress from data attribute or percentage text
+                const currentProgressText = progressPercentageElement.textContent;
+                const currentProgress = parseInt(currentProgressText.replace('%', '')) || 0;
                 const targetAmount = GIFT_TARGETS[giftType] || 1000000;
                 
-                // Calculate new progress percentage
-                const newProgress = Math.min((newAmount / targetAmount) * 100, 100);
+                // Calculate current amount from percentage
+                const currentAmount = (currentProgress / 100) * targetAmount;
+                const newAmount = currentAmount + contributionAmount;
+                
+                // Calculate new progress percentage (0-100%)
+                const newProgress = Math.min(Math.max((newAmount / targetAmount) * 100, 0), 100);
                 
                 // Update progress bar
                 progressBar.style.width = newProgress + '%';
                 progressBar.setAttribute('data-progress', Math.round(newProgress));
                 
-                // Update amount text
-                currentAmountElement.textContent = `$${newAmount.toLocaleString()}`;
-                
-                // Update target if needed
-                if (targetAmountElement) {
-                    targetAmountElement.textContent = `de $${targetAmount.toLocaleString()}`;
-                }
+                // Update percentage text
+                progressPercentageElement.textContent = `${Math.round(newProgress)}%`;
             }
         }
     });
