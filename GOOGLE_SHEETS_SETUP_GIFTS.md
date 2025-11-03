@@ -1,24 +1,21 @@
-# Configuración de Google Sheets para Formulario RSVP
+# Configuración de Google Sheets para Formulario de Regalos
 
-Este documento explica cómo configurar Google Sheets y Google Apps Script para recibir las respuestas del formulario RSVP.
+Este documento explica cómo configurar Google Sheets y Google Apps Script para recibir las contribuciones de regalos.
 
 ## Paso 1: Crear Google Sheet
 
 1. Ve a [Google Sheets](https://sheets.google.com)
-2. Crea una nueva hoja de cálculo
-3. Nombra la primera hoja como "RSVP Responses" (o el nombre que prefieras)
-4. En la primera fila, crea los siguientes encabezados en las columnas A-I:
+2. Crea una nueva hoja de cálculo (puede ser en el mismo archivo que RSVP o en uno separado)
+3. Nombra la hoja como "Gifts Responses" (o el nombre que prefieras)
+4. En la primera fila, crea los siguientes encabezados en las columnas A-F:
 
 ```
 A1: Timestamp
-B1: Nombre Completo
+B1: Nombre
 C1: Email
-D1: Teléfono
-E1: Asistirá
-F1: Menú
-G1: Transporte
-H1: Canción
-I1: Mensaje
+D1: Tipo de Regalo
+E1: Monto
+F1: Mensaje
 ```
 
 ## Paso 2: Crear Google Apps Script
@@ -28,7 +25,7 @@ I1: Mensaje
 3. Copia y pega el siguiente código:
 
 ```javascript
-const SHEET_NAME = 'RSVP Responses';
+const SHEET_NAME = 'Gifts Responses';
 const SCRIPT_PROP = PropertiesService.getScriptProperties();
 
 function initialSetup() {
@@ -41,18 +38,15 @@ function initialSetup() {
     
     // Set headers if sheet is empty
     if (sheet.getLastRow() === 0) {
-        sheet.getRange(1, 1, 1, 9).setValues([[
+        sheet.getRange(1, 1, 1, 6).setValues([[
             'Timestamp',
-            'Nombre Completo',
+            'Nombre',
             'Email',
-            'Teléfono',
-            'Asistirá',
-            'Menú',
-            'Transporte',
-            'Canción',
+            'Tipo de Regalo',
+            'Monto',
             'Mensaje'
         ]]);
-        sheet.getRange(1, 1, 1, 9).setFontWeight('bold');
+        sheet.getRange(1, 1, 1, 6).setFontWeight('bold');
     }
     
     SCRIPT_PROP.setProperty('key', activeSpreadsheet.getId());
@@ -72,14 +66,11 @@ function doPost(e) {
         
         const newRow = [
             new Date(),
-            data.name || '',
-            data.email || '',
-            data.phone || '',
-            data.attending === 'yes' ? 'Sí' : 'No',
-            data.menu || '',
-            data.transport === 'yes' ? 'Sí' : 'No',
-            data.song || '',
-            data.message || ''
+            data.contributorName || '',
+            data.contributorEmail || '',
+            data.giftType || '',
+            data.contributionAmount || 0,
+            data.contributionMessage || ''
         ];
         
         sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow]);
@@ -104,12 +95,12 @@ function doPost(e) {
 }
 
 function doGet(e) {
-    return ContentService.createTextOutput('RSVP Form Handler - POST requests only')
+    return ContentService.createTextOutput('Gifts Form Handler - POST requests only')
         .setMimeType(ContentService.MimeType.TEXT);
 }
 ```
 
-4. Guarda el proyecto con un nombre (ej: "RSVP Handler")
+4. Guarda el proyecto con un nombre (ej: "Gifts Handler")
 5. Haz clic en **Ejecutar → initialSetup** (primera vez solamente)
 6. Da los permisos necesarios cuando te lo solicite
 
@@ -120,12 +111,12 @@ function doGet(e) {
 1. En Apps Script, haz clic en **Implementar → Nueva implementación**
 2. Selecciona:
    - **Tipo**: Aplicación web
-   - **Nombre**: RSVP Web App (o el que prefieras)
+   - **Nombre**: Gifts Web App (o el que prefieras)
    - **Ejecutar como**: Yo (tu cuenta)
    - **Quién tiene acceso**: **Cualquiera (incluso anónimo)** ← **ESTO ES CRÍTICO**
 3. Haz clic en **Implementar**
 4. Copia la **URL de la aplicación web** (debe terminar en `/exec`, algo como: `https://script.google.com/macros/s/.../exec`)
-5. Esta URL será tu endpoint
+5. Esta URL será tu endpoint para regalos
 
 **Nota sobre re-despliegues:** Cada vez que hagas cambios en el código de Apps Script, debes:
 - Guardar el proyecto
@@ -137,21 +128,22 @@ function doGet(e) {
 ## Paso 4: Configurar en el sitio web
 
 1. Abre el archivo `script.js`
-2. Busca la constante `GOOGLE_SHEETS_URL` en la línea 3
-3. Reemplaza `'TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI'` con la URL que obtuviste en el paso 3
+2. Busca la constante `GOOGLE_SHEETS_GIFTS_URL` en la línea 4
+3. Reemplaza `'TU_URL_DE_GOOGLE_APPS_SCRIPT_REGALOS_AQUI'` con la URL que obtuviste en el paso 3
 4. Debe quedar algo como:
    ```javascript
-   const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwjnKwxgm9qgDN8iXdVgEjPyEg51CnBzdYmEiRgVvpabGYnCrRoeGQbPrngfxvG7-6Q/exec';
+   const GOOGLE_SHEETS_GIFTS_URL = 'https://script.google.com/macros/s/AKfycbwjnKwxgm9qgDN8iXdVgEjPyEg51CnBzdYmEiRgVvpabGYnCrRoeGQbPrngfxvG7-6Q/exec';
    ```
 
-**Nota importante:** El código ya está configurado para usar `Content-Type: text/plain`, lo que evita los problemas de CORS preflight. No necesitas hacer cambios adicionales en el código JavaScript.
+**Nota importante:** El código ya está configurado para usar `Content-Type: text/plain`, lo que evita los problemas de CORS preflight. El tipo de regalo se establece automáticamente según el botón que se presionó.
 
 ## Paso 5: Prueba el formulario
 
 1. Abre tu sitio web
-2. Completa el formulario RSVP
-3. Envía el formulario
-4. Verifica que los datos aparezcan en tu Google Sheet
+2. Haz clic en "Contribuir" en cualquier regalo
+3. Completa el formulario con nombre, email y monto
+4. Envía el formulario
+5. Verifica que los datos aparezcan en la hoja "Gifts Responses" con el tipo de regalo correcto
 
 ## Solución de problemas
 
@@ -171,8 +163,9 @@ Si ves errores de CORS en la consola del navegador:
 - **Error 500 (Error interno)**: Revisa el código de `doPost` en Apps Script, especialmente la función `initialSetup()` debe haberse ejecutado al menos una vez
 - **Datos no aparecen**: 
   - Revisa la consola del navegador para ver errores específicos
-  - Verifica que la hoja se llame exactamente "RSVP Responses" (o el nombre que configuraste en `SHEET_NAME`)
+  - Verifica que la hoja se llame exactamente "Gifts Responses" (o el nombre que configuraste en `SHEET_NAME`)
   - Asegúrate de haber ejecutado `initialSetup()` la primera vez
+- **Tipo de regalo incorrecto**: Verifica que el botón "Contribuir" esté llamando a `openGiftModal()` con el tipo correcto
 
 ## Notas de seguridad
 

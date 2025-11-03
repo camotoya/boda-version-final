@@ -1,7 +1,7 @@
 // Google Sheets Configuration
-// IMPORTANTE: Reemplaza esta URL con la URL de tu Google Apps Script después de seguir las instrucciones en GOOGLE_SHEETS_SETUP.md
-// Esta URL maneja tanto RSVP como Regalos
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxsI9LrG7o2kmVl5mxtSfz681bpTkgMyQWiP3_Gi-SE-jtwVQ74B2Wz_K4-JzWQJbRd/exec';
+// IMPORTANTE: Reemplaza estas URLs con las URLs de tus Google Apps Script después de seguir las instrucciones
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbykrjb_RQumswRZiVLev5smYX0cyBq4sZ6J6x9OxfeOAVQ89DYcbPz7p1lATc-uW1Fh/exec'; // RSVP
+const GOOGLE_SHEETS_GIFTS_URL = 'https://script.google.com/macros/s/AKfycbyVeJe6m7sZjGGYgLkaSmAm0LsbaSee5uDLy8PqRvEOtz8RGQ9Px1Pigcjbd2K0nPeK/exec'; // Regalos
 
 // Navigation Toggle (Desktop and Mobile)
 const hamburger = document.getElementById('hamburger');
@@ -377,25 +377,24 @@ document.getElementById('giftForm').addEventListener('submit', async (e) => {
         };
         const giftType = giftTitles[giftTypeKey] || 'Aporte general';
         
-        // Validar que la URL de Google Sheets esté configurada
-        if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL === 'TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI') {
-            throw new Error('Por favor, configura la URL de Google Sheets en script.js. Consulta GOOGLE_SHEETS_SETUP.md para más información.');
+        // Validar que la URL de Google Sheets para regalos esté configurada
+        if (!GOOGLE_SHEETS_GIFTS_URL || GOOGLE_SHEETS_GIFTS_URL === 'TU_URL_DE_GOOGLE_APPS_SCRIPT_REGALOS_AQUI') {
+            throw new Error('Por favor, configura la URL de Google Sheets para regalos en script.js. Consulta GOOGLE_SHEETS_SETUP_GIFTS.md para más información.');
         }
 
         // Preparar datos para Google Sheets
         const contributionAmount = parseFloat(data.contributionAmount) || 0;
         const payload = {
-            formType: 'gift', // Identificador para diferenciar de RSVP
             contributorName: data.contributorName || '',
             contributorEmail: data.contributorEmail || '',
             contributionAmount: contributionAmount,
             contributionMessage: data.contributionMessage || '',
-            giftType: giftType
+            giftType: giftType // El tipo se establece automáticamente según el botón presionado
         };
         
-        // Enviar a Google Sheets via Google Apps Script
+        // Enviar a Google Sheets via Google Apps Script (endpoint específico para regalos)
         // Usamos text/plain para evitar preflight CORS (solicitudes simples no requieren OPTIONS)
-        const response = await fetch(GOOGLE_SHEETS_URL, {
+        const response = await fetch(GOOGLE_SHEETS_GIFTS_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'text/plain;charset=utf-8',
