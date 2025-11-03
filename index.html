@@ -98,14 +98,17 @@
             <div class="nav-logo">
                 <h2>Sofía & Camilo</h2>
             </div>
+            <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="nav-menu">
+                <span>Secciones</span>
+            </button>
             <ul class="nav-menu" id="nav-menu" role="menubar">
                 <li role="none"><a href="#inicio" class="nav-link" role="menuitem" aria-label="Ir a la sección de inicio">Inicio</a></li>
                 <li role="none"><a href="#historia" class="nav-link" role="menuitem" aria-label="Ir a nuestra historia">Nuestra Historia</a></li>
                 <li role="none"><a href="#cuando-donde" class="nav-link" role="menuitem" aria-label="Ir a cuándo y dónde">Cuándo y Dónde</a></li>
+                <li role="none"><a href="#recomendaciones" class="nav-link" role="menuitem" aria-label="Ir a información">Información</a></li>
                 <li role="none"><a href="#regalos" class="nav-link" role="menuitem" aria-label="Ir a mesa de regalos">Regalos</a></li>
                 <li role="none"><a href="#rsvp" class="nav-link" role="menuitem" aria-label="Confirmar asistencia">Confirmar Asistencia</a></li>
                 <li role="none"><a href="#galeria" class="nav-link" role="menuitem" aria-label="Ir a galería">Galería</a></li>
-                <li role="none"><a href="#recomendaciones" class="nav-link" role="menuitem" aria-label="Ir a recomendaciones">Recomendaciones</a></li>
             </ul>
             <button class="hamburger" id="hamburger" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="nav-menu">
                 <span class="bar" aria-hidden="true"></span>
@@ -123,7 +126,7 @@
         <div class="hero-content">
             <div class="hero-text">
                 <h1 class="hero-title">Sofía & Camilo</h1>
-                <p class="hero-subtitle">Nos casamos</p>
+                <p class="hero-subtitle">&nbsp;</p>
                 <p class="hero-date">9 de Enero, 2026</p>
                 <p class="hero-location">Bogotá, Colombia</p>
                 
@@ -243,6 +246,50 @@
                             <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
                             <span>Ver ubicación en Google Maps</span>
                         </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Información y Recomendaciones -->
+    <section id="recomendaciones" class="recommendations">
+        <div class="container">
+            <h2 class="section-title">Información</h2>
+            
+            <div class="recommendations-grid">
+                <div class="recommendation-card">
+                    <div class="recommendation-image">
+                        <img src="assets/images/vestuario.jpg" alt="Ejemplo de código de vestuario - Etiqueta" class="vestuario-photo" loading="lazy">
+                    </div>
+                    <h3>Código de vestuario</h3>
+                    <div class="recommendation-content">
+                        <p>Código de vestuario: <strong>Etiqueta</strong>.</p>
+                        <p><strong>Hombres:</strong> smoking.</p>
+                        <p><strong>Mujeres:</strong> vestido largo sin estampados.</p>
+                    </div>
+                </div>
+
+                <div class="recommendation-card">
+                    <div class="recommendation-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <h3>Estadía: Dónde alojarse</h3>
+                    <div class="recommendation-content">
+                        <p>Para invitados que atenderán desde otras ciudades, recomendamos hospedarse cerca de la Carrera Séptima entre calles 72 y 85 (zonas como Zona G, Quinta Camacho, Rosales, El Nogal, La Porciuncula y alrededores). Estarán a pocos minutos de la ceremonia y muy bien ubicados para tomar la salida de Bogotá hacia La Calera, donde queda el club de La Pradera de Potosí y se llevará a cabo la recepción. Así la llegada y el regreso a Bogotá serán más fáciles.</p>
+                    </div>
+                </div>
+
+                <div class="recommendation-card">
+                    <div class="recommendation-icon">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <h3>Transporte del evento (vans)</h3>
+                    <div class="recommendation-content">
+                        <p>Tendremos vans para ir y volver a la recepción en La Calera.</p>
+                        <p><strong>Ida:</strong> saldrán desde el Gimnasio Moderno al terminar la ceremonia.</p>
+                        <p><strong>Regreso:</strong> retornos escalonados a la misma zona y podremos personalizar a hoteles cercanos de la zona.</p>
+                        <p>Para reservar tu cupo, marca que quieres usar la van al confirmar tu asistencia. Con esa info coordinamos horarios y punto exacto de  en Bogotá.</p>
                     </div>
                 </div>
             </div>
@@ -476,64 +523,6 @@
                 </div>
                 <div class="gallery-item">
                     <img src="assets/images/galeria8.jpg" alt="Galería - Foto 8" class="gallery-photo" loading="lazy">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Recomendaciones -->
-    <section id="recomendaciones" class="recommendations">
-        <div class="container">
-            <h2 class="section-title">Recomendaciones</h2>
-            
-            <div class="recommendations-grid">
-                <div class="recommendation-card">
-                    <div class="recommendation-icon">
-                        <i class="fas fa-bed"></i>
-                    </div>
-                    <h3>Hospedaje</h3>
-                    <div class="recommendation-content">
-                        <h4>Hoteles Recomendados</h4>
-                        <ul>
-                            <li><strong>Hotel Tequendama</strong> - Centro de Bogotá</li>
-                            <li><strong>Hotel Casa Medina</strong> - Zona Rosa</li>
-                            <li><strong>Hotel Sofitel Victoria Regia</strong> - Chapinero</li>
-                        </ul>
-                        <p class="recommendation-note">Todos cerca de la ceremonia y con fácil acceso al transporte hacia la recepción.</p>
-                    </div>
-                </div>
-
-                <div class="recommendation-card">
-                    <div class="recommendation-icon">
-                        <i class="fas fa-car"></i>
-                    </div>
-                    <h3>Transporte</h3>
-                    <div class="recommendation-content">
-                        <h4>Opciones de Movilidad</h4>
-                        <ul>
-                            <li><strong>Uber/Cabify</strong> - Para moverse por la ciudad</li>
-                            <li><strong>TransMilenio</strong> - Sistema de transporte público</li>
-                            <li><strong>Transporte Asistido</strong> - Vans desde ceremonia a recepción</li>
-                        </ul>
-                        <p class="recommendation-note">Al confirmar asistencia, puedes solicitar cupo en el transporte asistido.</p>
-                    </div>
-                </div>
-
-                <div class="recommendation-card">
-                    <div class="recommendation-icon">
-                        <i class="fas fa-map-marked-alt"></i>
-                    </div>
-                    <h3>Turismo</h3>
-                    <div class="recommendation-content">
-                        <h4>Lugares para Visitar</h4>
-                        <ul>
-                            <li><strong>Monserrate</strong> - Vista panorámica de Bogotá</li>
-                            <li><strong>Museo del Oro</strong> - Cultura precolombina</li>
-                            <li><strong>La Candelaria</strong> - Centro histórico</li>
-                            <li><strong>Usaquén</strong> - Mercado de artesanías</li>
-                        </ul>
-                        <p class="recommendation-note">Perfectos para aprovechar tu visita a Bogotá.</p>
-                    </div>
                 </div>
             </div>
         </div>

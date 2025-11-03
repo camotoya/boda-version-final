@@ -1,21 +1,53 @@
-// Mobile Navigation Toggle
+// Navigation Toggle (Desktop and Mobile)
 const hamburger = document.getElementById('hamburger');
+const menuToggle = document.getElementById('menu-toggle');
 const navMenu = document.getElementById('nav-menu');
 
-hamburger.addEventListener('click', () => {
-    const isActive = navMenu.classList.toggle('active');
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded', isActive);
-    hamburger.setAttribute('aria-label', isActive ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
-});
+// Desktop menu toggle
+if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+        const isActive = navMenu.classList.toggle('active');
+        menuToggle.setAttribute('aria-expanded', isActive);
+        menuToggle.setAttribute('aria-label', isActive ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
+        
+        // Button text updates automatically via CSS
+    });
+}
 
-// Close mobile menu when clicking on a link
+// Mobile menu toggle
+if (hamburger) {
+    hamburger.addEventListener('click', () => {
+        const isActive = navMenu.classList.toggle('active');
+        hamburger.classList.toggle('active');
+        hamburger.setAttribute('aria-expanded', isActive);
+        hamburger.setAttribute('aria-label', isActive ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
+    });
+}
+
+// Close menu when clicking on a link
 document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
-    hamburger.classList.remove('active');
+    if (hamburger) {
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+        hamburger.setAttribute('aria-label', 'Abrir menú de navegación');
+    }
+    if (menuToggle) {
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Abrir menú de navegación');
+    }
     navMenu.classList.remove('active');
-    hamburger.setAttribute('aria-expanded', 'false');
-    hamburger.setAttribute('aria-label', 'Abrir menú de navegación');
 }));
+
+// Close menu when clicking outside (desktop)
+document.addEventListener('click', (e) => {
+    if (menuToggle && navMenu && window.innerWidth > 768) {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+            navMenu.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.setAttribute('aria-label', 'Abrir menú de navegación');
+        }
+    }
+});
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {

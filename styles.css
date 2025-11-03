@@ -38,6 +38,7 @@ body {
     justify-content: space-between;
     align-items: center;
     height: 70px;
+    position: relative;
 }
 
 .nav-logo h2 {
@@ -47,10 +48,46 @@ body {
     font-weight: 700;
 }
 
+.menu-toggle {
+    display: none;
+    background: linear-gradient(135deg, #d4af37, #f4e4bc);
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    z-index: 1001;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.menu-toggle:hover {
+    background: linear-gradient(135deg, #c4a027, #e4d4ac);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+    transform: translateY(-2px);
+}
+
+.menu-toggle:active {
+    transform: translateY(0);
+}
+
+.menu-toggle span {
+    display: inline-block;
+}
+
 .nav-menu {
     display: flex;
     list-style: none;
     gap: 2rem;
+}
+
+/* Desktop: Hide menu by default, show with toggle */
+@media (min-width: 769px) {
+    .nav-menu {
+        display: none;
+    }
 }
 
 .nav-link {
@@ -1005,11 +1042,41 @@ body {
     align-items: center;
     justify-content: center;
     margin-bottom: 1.5rem;
+    position: relative;
 }
 
-.recommendation-icon i {
-    font-size: 2rem;
-    color: white;
+.recommendation-icon i,
+.recommendation-icon .fas,
+.recommendation-icon .fa-bed,
+.recommendation-icon .fa-bus {
+    font-size: 2rem !important;
+    color: white !important;
+    display: inline-block !important;
+    width: auto !important;
+    height: auto !important;
+    font-style: normal !important;
+    font-variant: normal !important;
+    text-rendering: auto !important;
+    -webkit-font-smoothing: antialiased !important;
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+}
+
+.recommendation-image {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 1.5rem;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.vestuario-photo {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
 }
 
 .recommendation-card h3 {
@@ -1022,6 +1089,21 @@ body {
 .recommendation-content h4 {
     color: #d4af37;
     margin-bottom: 1rem;
+}
+
+.recommendation-content p {
+    margin-bottom: 1rem;
+    color: #666;
+    line-height: 1.8;
+}
+
+.recommendation-content p:last-child {
+    margin-bottom: 0;
+}
+
+.recommendation-content strong {
+    color: #333;
+    font-weight: 600;
 }
 
 .recommendation-content ul {
@@ -1116,8 +1198,73 @@ body {
     background: #5a6268;
 }
 
+/* Desktop Dropdown Menu - Override default menu display */
+@media (min-width: 769px) {
+    .menu-toggle {
+        display: inline-block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 20px;
+        flex-direction: column;
+        background-color: white;
+        min-width: 280px;
+        text-align: left;
+        box-shadow: 0 10px 27px rgba(0,0,0,0.15);
+        padding: 1.5rem 0;
+        border-radius: 10px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        z-index: 1002;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .nav-menu.active {
+        display: flex !important;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .nav-menu li {
+        width: 100%;
+        padding: 0 1.5rem;
+    }
+
+    .nav-link {
+        display: block;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .nav-link:last-child {
+        border-bottom: none;
+    }
+
+    .nav-link::after {
+        display: none;
+    }
+
+    .nav-link:hover {
+        background-color: rgba(212, 175, 55, 0.1);
+        padding-left: 1.25rem;
+        transition: padding-left 0.3s ease;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
+    .menu-toggle {
+        display: none;
+    }
+
     .hamburger {
         display: flex;
     }
@@ -1159,9 +1306,6 @@ body {
         margin: 2rem 0;
     }
 
-    .hero-background {
-        background-image: url('assets/images/foto-hero-mobile.jpg');
-    }
 
     .countdown {
         gap: 0.8rem;
