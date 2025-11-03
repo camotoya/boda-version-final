@@ -1156,6 +1156,52 @@ body {
     box-shadow: 0 20px 40px rgba(0,0,0,0.2);
 }
 
+.bank-info {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 2px solid #d4af37;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1.5rem 0 2rem 0;
+}
+
+.bank-info h4 {
+    color: #2d5016;
+    font-size: 1.1rem;
+    margin: 0 0 1rem 0;
+    text-align: center;
+}
+
+.bank-details {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.bank-details p {
+    margin: 0.75rem 0;
+    color: #333;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.bank-details strong {
+    color: #2d5016;
+    font-weight: 600;
+    display: inline-block;
+    min-width: 140px;
+}
+
+.bank-note {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    padding-top: 0.5rem;
+    border-top: 1px solid #dee2e6;
+}
+
 .close {
     color: #aaa;
     float: right;
@@ -1435,6 +1481,34 @@ body {
         margin: 10% auto;
         width: 95%;
         padding: 1.5rem;
+    }
+
+    .bank-info {
+        padding: 1.25rem;
+        margin: 1rem 0 1.5rem 0;
+    }
+
+    .bank-info h4 {
+        font-size: 1rem;
+    }
+
+    .bank-details {
+        padding: 0.875rem;
+    }
+
+    .bank-details p {
+        font-size: 0.875rem;
+        margin: 0.5rem 0;
+    }
+
+    .bank-details strong {
+        min-width: 120px;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .bank-note {
+        font-size: 0.85rem;
     }
 }
 

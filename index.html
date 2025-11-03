@@ -301,6 +301,15 @@
             
             <div class="gifts-grid">
                 <div class="gift-card">
+                    <h3>Lista de regalos de Amazon</h3>
+                    <p class="gift-description">Por si nos quieres regalar algo específico.</p>
+                    <div class="gift-image">
+                        <img src="assets/images/amazon-logo.png" alt="Lista de regalos de Amazon" class="gift-photo amazon-logo-img" loading="lazy" width="300" height="200">
+                    </div>
+                    <a href="https://www.amazon.com.mx/wedding/share/sofiycami" target="_blank" rel="noopener noreferrer" class="gift-button" aria-label="Ver lista de regalos de Amazon">Ver lista</a>
+                </div>
+
+                <div class="gift-card">
                     <h3>Sofás para la sala</h3>
                     <p class="gift-description">Para armar nuestro primer espacio de descanso y visitas.</p>
                     <div class="gift-image">
@@ -349,17 +358,6 @@
                         </div>
                     </div>
                     <button class="gift-button" onclick="openGiftModal('fondo-general')" aria-label="Contribuir a Aporte general">Contribuir</button>
-                </div>
-            </div>
-            
-            <div style="max-width: 300px; margin: 2rem auto 0;">
-                <div class="gift-card">
-                    <h3>Lista de regalos de Amazon</h3>
-                    <p class="gift-description">Por si nos quieres regalar algo específico.</p>
-                    <div class="gift-image">
-                        <img src="assets/images/amazon-logo.png" alt="Lista de regalos de Amazon" class="gift-photo amazon-logo-img" loading="lazy" width="300" height="200">
-                    </div>
-                    <a href="https://www.amazon.com.mx/wedding/share/sofiycami" target="_blank" rel="noopener noreferrer" class="gift-button" aria-label="Ver lista de regalos de Amazon">Ver lista</a>
                 </div>
             </div>
             
@@ -493,6 +491,19 @@
         <div class="modal-content">
             <button type="button" class="close" onclick="closeGiftModal()" aria-label="Cerrar modal">&times;</button>
             <h3 id="modalTitle">Contribuir al Regalo</h3>
+            
+            <div class="bank-info">
+                <h4>Información para Transferencia Bancaria</h4>
+                <div class="bank-details">
+                    <p><strong>Banco:</strong> Bancolombia</p>
+                    <p><strong>Número de cuenta:</strong> 04884246721</p>
+                    <p><strong>Clave:</strong> @otoya232</p>
+                    <p><strong>Titular:</strong> Camilo Otoya Cabrera</p>
+                    <p><strong>Documento:</strong> Cédula 1018459232</p>
+                </div>
+                <p class="bank-note">Realiza tu transferencia y luego completa el formulario para registrar tu aporte.</p>
+            </div>
+            
             <form id="giftForm" name="gift-form">
                 <div class="form-group">
                     <label for="contributorName">Tu Nombre *</label>
