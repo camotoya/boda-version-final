@@ -425,11 +425,19 @@ function updateProgressBarForGift(giftType, contributionAmount) {
     const giftCards = document.querySelectorAll('.gift-card');
     
     giftCards.forEach(card => {
-        const cardTitle = card.querySelector('h3').textContent;
+        // Verificar que la tarjeta tenga un h3 antes de intentar leerlo
+        const cardTitleElement = card.querySelector('h3');
+        if (!cardTitleElement) {
+            // Esta tarjeta no tiene título h3 (como la tarjeta especial), saltarla
+            return;
+        }
+        
+        const cardTitle = cardTitleElement.textContent;
         if (cardTitle === giftType) {
             const progressBar = card.querySelector('.progress-fill');
             const progressPercentageElement = card.querySelector('.progress-percentage');
             
+            // Solo actualizar si existe la barra de progreso
             if (progressBar && progressPercentageElement) {
                 // Get current progress from data attribute or percentage text
                 const currentProgressText = progressPercentageElement.textContent;
