@@ -273,7 +273,11 @@ rsvpForm.addEventListener('submit', async (e) => {
             },
             body: JSON.stringify(payload)
         });
-        
+
+        if (response.type === 'opaqueredirect') {
+            throw new Error('RSVP_CORS_REDIRECT');
+        }
+
         if (response.ok) {
             const result = await response.json();
             if (result.result === 'success') {
@@ -284,17 +288,25 @@ rsvpForm.addEventListener('submit', async (e) => {
         } else {
             throw new Error('Error HTTP: ' + response.status);
         }
-        
+
         if (data.attending === 'yes') {
             showNotification('¡Gracias por confirmar tu asistencia! Te esperamos en nuestro gran día. 🎉', 'success');
             createConfetti();
         } else {
             showNotification('Entendemos que no puedas asistir. ¡Gracias por tu mensaje! 💕', 'info');
         }
-        
+
     } catch (error) {
         console.error('Error submitting RSVP:', error);
-        showNotification('Hubo un error al enviar tu confirmación. Por favor, inténtalo de nuevo.', 'error');
+        let errorMessage = 'Hubo un error al enviar tu confirmación. Por favor, inténtalo de nuevo.';
+
+        if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+            errorMessage = 'No pudimos contactar el servicio de confirmación. Revisa tu conexión o la configuración del Google Apps Script.';
+        } else if (error.message === 'RSVP_CORS_REDIRECT') {
+            errorMessage = 'Tu confirmación no se pudo enviar porque el servicio redirigió la solicitud. Verifica que tu Google Apps Script esté desplegado para “Cualquiera” y con cabeceras CORS válidas.';
+        }
+
+        showNotification(errorMessage, 'error');
     } finally {
         rsvpForm.reset();
         additionalOptions.style.display = 'none';

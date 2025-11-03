@@ -34,11 +34,11 @@ const SCRIPT_PROP = PropertiesService.getScriptProperties();
 function initialSetup() {
     const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     let sheet = activeSpreadsheet.getSheetByName(SHEET_NAME);
-    
+
     if (!sheet) {
         sheet = activeSpreadsheet.insertSheet(SHEET_NAME);
     }
-    
+
     // Set headers if sheet is empty
     if (sheet.getLastRow() === 0) {
         sheet.getRange(1, 1, 1, 9).setValues([[
@@ -54,21 +54,28 @@ function initialSetup() {
         ]]);
         sheet.getRange(1, 1, 1, 9).setFontWeight('bold');
     }
-    
+
     SCRIPT_PROP.setProperty('key', activeSpreadsheet.getId());
+}
+
+function withCorsHeaders(output) {
+    output.setHeader('Access-Control-Allow-Origin', '*');
+    output.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    output.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    return output;
 }
 
 function doPost(e) {
     const lock = LockService.getPublicLock();
     lock.waitLock(30000);
-    
+
     try {
         const doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty('key'));
         const sheet = doc.getSheetByName(SHEET_NAME);
         const nextRow = sheet.getLastRow() + 1;
-        
+
         const data = JSON.parse(e.postData.contents);
-        
+
         const newRow = [
             new Date(),
             data.name || '',
@@ -80,41 +87,42 @@ function doPost(e) {
             data.song || '',
             data.message || ''
         ];
-        
+
         sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow]);
-        
-        return ContentService
+
+        const successOutput = ContentService
             .createTextOutput(JSON.stringify({
-                'result': 'success',
-                'row': nextRow
+                result: 'success',
+                row: nextRow
             }))
-            .setMimeType(ContentService.MimeType.JSON)
-            .setHeaders({
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST',
-                'Access-Control-Allow-Headers': 'Content-Type'
-            });
-            
-    } catch (e) {
-        return ContentService
+            .setMimeType(ContentService.MimeType.JSON);
+
+        return withCorsHeaders(successOutput);
+
+    } catch (err) {
+        const errorOutput = ContentService
             .createTextOutput(JSON.stringify({
-                'result': 'error',
-                'error': e.toString()
+                result: 'error',
+                error: err.toString()
             }))
-            .setMimeType(ContentService.MimeType.JSON)
-            .setHeaders({
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST',
-                'Access-Control-Allow-Headers': 'Content-Type'
-            });
+            .setMimeType(ContentService.MimeType.JSON);
+
+        return withCorsHeaders(errorOutput);
     } finally {
         lock.releaseLock();
     }
 }
 
-function doGet(e) {
-    return ContentService.createTextOutput('RSVP Form Handler - POST requests only')
+function doGet() {
+    const output = ContentService.createTextOutput('RSVP Form Handler - POST requests only')
         .setMimeType(ContentService.MimeType.TEXT);
+    return withCorsHeaders(output);
+}
+
+function doOptions() {
+    const output = ContentService.createTextOutput('')
+        .setMimeType(ContentService.MimeType.TEXT);
+    return withCorsHeaders(output);
 }
 ```
 
