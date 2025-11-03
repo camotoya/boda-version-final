@@ -1,6 +1,6 @@
 // Google Sheets Configuration
 // IMPORTANTE: Reemplaza esta URL con la URL de tu Google Apps Script después de seguir las instrucciones en GOOGLE_SHEETS_SETUP.md
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwjnKwxgm9qqDN8iXdVgEjPyEg51CnBzdYmEiRgVvpabGYnCrRoeGQbPrngfxvG7-6Q/exec';
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwsqi-RzTmPY98lwyvKWdkfEwV4B1ocwaK9U9c2AhnDku-IH2QUGFM7MLk3xfuQnT8/exec';
 
 // Navigation Toggle (Desktop and Mobile)
 const hamburger = document.getElementById('hamburger');
