@@ -1,0 +1,79 @@
+// CÓDIGO CORREGIDO PARA GOOGLE APPS SCRIPT - FORMULARIO DE REGALOS
+// Copia y pega este código completo en tu Apps Script
+
+const SHEET_NAME_GIFTS = 'Gifts Responses';
+
+const SCRIPT_PROP_GIFTS = PropertiesService.getScriptProperties();
+
+function initialSetup() {
+    const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    let sheet = activeSpreadsheet.getSheetByName(SHEET_NAME_GIFTS);
+    
+    if (!sheet) {
+        sheet = activeSpreadsheet.insertSheet(SHEET_NAME_GIFTS);
+    }
+    
+    // Set headers if sheet is empty
+    if (sheet.getLastRow() === 0) {
+        sheet.getRange(1, 1, 1, 6).setValues([[
+            'Timestamp',
+            'Nombre',
+            'Email',
+            'Tipo de Regalo',
+            'Monto',
+            'Mensaje'
+        ]]);
+        sheet.getRange(1, 1, 1, 6).setFontWeight('bold');
+    }
+    
+    SCRIPT_PROP_GIFTS.setProperty('key', activeSpreadsheet.getId());
+}
+
+function doPost(e) {
+    const lock = LockService.getPublicLock();
+    lock.waitLock(30000);
+    
+    try {
+        // CORRECCIÓN: SCRIPT_PROP_GIFTS (no SCRIPT_PRO_GIFTS)
+        const doc = SpreadsheetApp.openById(SCRIPT_PROP_GIFTS.getProperty('key'));
+        const sheet = doc.getSheetByName(SHEET_NAME_GIFTS);
+        const nextRow = sheet.getLastRow() + 1;
+        
+        // Parsear JSON del body (aunque el Content-Type sea text/plain)
+        const data = JSON.parse(e.postData.contents || '{}');
+        
+        const newRow = [
+            new Date(),
+            data.contributorName || '',
+            data.contributorEmail || '',
+            data.giftType || '',
+            data.contributionAmount || 0,
+            data.contributionMessage || ''
+        ];
+        
+        sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow]);
+        
+        return ContentService
+            .createTextOutput(JSON.stringify({
+                'result': 'success',
+                'row': nextRow
+            }))
+            .setMimeType(ContentService.MimeType.JSON);
+            
+    } catch (e) {
+        return ContentService
+            .createTextOutput(JSON.stringify({
+                'result': 'error',
+                'error': e.toString()
+            }))
+            .setMimeType(ContentService.MimeType.JSON);
+    } finally {
+        lock.releaseLock();
+    }
+}
+
+function doGet(e) {
+    return ContentService.createTextOutput('Gifts Form Handler - POST requests only')
+        .setMimeType(ContentService.MimeType.TEXT);
+}
+

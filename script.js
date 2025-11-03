@@ -1,7 +1,7 @@
 // Google Sheets Configuration
 // IMPORTANTE: Reemplaza estas URLs con las URLs de tus Google Apps Script después de seguir las instrucciones
 const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbykrjb_RQumswRZiVLev5smYX0cyBq4sZ6J6x9OxfeOAVQ89DYcbPz7p1lATc-uW1Fh/exec'; // RSVP
-const GOOGLE_SHEETS_GIFTS_URL = 'https://script.google.com/macros/s/AKfycbzWKUhYvH-CrMCh0TJnLiRYp2BrcLDgbG06JsII8F2rMVc1SmHRvJWE4IBxvS-4Q_vN/exec'; // Regalos
+const GOOGLE_SHEETS_GIFTS_URL = 'https://script.google.com/macros/s/AKfycbyBon_-xCr5X3eKrzX4-FtiNOGhVuQbUQphYgkXyu48VAonpDVTk2ZvixltDZEz0PCy/exec'; // Regalos
 
 // Navigation Toggle (Desktop and Mobile)
 const hamburger = document.getElementById('hamburger');
