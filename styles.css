@@ -732,6 +732,12 @@ body {
     color: #333;
     margin-bottom: 0.5rem;
     margin-top: 0;
+    line-height: 1.4;
+    min-height: calc(1.5rem * 1.4 * 2); /* Altura equivalente a 2 líneas */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .gift-description {
@@ -1368,6 +1374,7 @@ body {
 
     .gift-card h3 {
         font-size: 1.3rem;
+        min-height: calc(1.3rem * 1.4 * 2); /* Ajustar altura para móvil */
     }
 
     .gift-description {
