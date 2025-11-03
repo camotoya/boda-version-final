@@ -1,13 +1,16 @@
-# Configuración de Google Sheets para Formulario RSVP
+# Configuración de Google Sheets para Formularios RSVP y Regalos
 
-Este documento explica cómo configurar Google Sheets y Google Apps Script para recibir las respuestas del formulario RSVP.
+Este documento explica cómo configurar Google Sheets y Google Apps Script para recibir las respuestas de los formularios RSVP y de Regalos.
 
 ## Paso 1: Crear Google Sheet
 
 1. Ve a [Google Sheets](https://sheets.google.com)
 2. Crea una nueva hoja de cálculo
-3. Nombra la primera hoja como "RSVP Responses" (o el nombre que prefieras)
-4. En la primera fila, crea los siguientes encabezados en las columnas A-I:
+3. Crea dos hojas de cálculo:
+   - **Hoja 1**: Nómbrala "RSVP Responses" (o el nombre que prefieras)
+   - **Hoja 2**: Nómbrala "Gifts Responses" (o el nombre que prefieras)
+   
+4. **Para RSVP Responses**, en la primera fila crea los siguientes encabezados (columnas A-I):
 
 ```
 A1: Timestamp
@@ -21,6 +24,17 @@ H1: Canción
 I1: Mensaje
 ```
 
+5. **Para Gifts Responses**, en la primera fila crea los siguientes encabezados (columnas A-F):
+
+```
+A1: Timestamp
+B1: Nombre
+C1: Email
+D1: Tipo de Regalo
+E1: Monto
+F1: Mensaje
+```
+
 ## Paso 2: Crear Google Apps Script
 
 1. En tu Google Sheet, ve a **Extensiones → Apps Script**
@@ -28,20 +42,20 @@ I1: Mensaje
 3. Copia y pega el siguiente código:
 
 ```javascript
-const SHEET_NAME = 'RSVP Responses';
+const RSVP_SHEET_NAME = 'RSVP Responses';
+const GIFTS_SHEET_NAME = 'Gifts Responses';
 const SCRIPT_PROP = PropertiesService.getScriptProperties();
 
 function initialSetup() {
     const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    let sheet = activeSpreadsheet.getSheetByName(SHEET_NAME);
     
-    if (!sheet) {
-        sheet = activeSpreadsheet.insertSheet(SHEET_NAME);
+    // Setup RSVP sheet
+    let rsvpSheet = activeSpreadsheet.getSheetByName(RSVP_SHEET_NAME);
+    if (!rsvpSheet) {
+        rsvpSheet = activeSpreadsheet.insertSheet(RSVP_SHEET_NAME);
     }
-    
-    // Set headers if sheet is empty
-    if (sheet.getLastRow() === 0) {
-        sheet.getRange(1, 1, 1, 9).setValues([[
+    if (rsvpSheet.getLastRow() === 0) {
+        rsvpSheet.getRange(1, 1, 1, 9).setValues([[
             'Timestamp',
             'Nombre Completo',
             'Email',
@@ -52,7 +66,24 @@ function initialSetup() {
             'Canción',
             'Mensaje'
         ]]);
-        sheet.getRange(1, 1, 1, 9).setFontWeight('bold');
+        rsvpSheet.getRange(1, 1, 1, 9).setFontWeight('bold');
+    }
+    
+    // Setup Gifts sheet
+    let giftsSheet = activeSpreadsheet.getSheetByName(GIFTS_SHEET_NAME);
+    if (!giftsSheet) {
+        giftsSheet = activeSpreadsheet.insertSheet(GIFTS_SHEET_NAME);
+    }
+    if (giftsSheet.getLastRow() === 0) {
+        giftsSheet.getRange(1, 1, 1, 6).setValues([[
+            'Timestamp',
+            'Nombre',
+            'Email',
+            'Tipo de Regalo',
+            'Monto',
+            'Mensaje'
+        ]]);
+        giftsSheet.getRange(1, 1, 1, 6).setFontWeight('bold');
     }
     
     SCRIPT_PROP.setProperty('key', activeSpreadsheet.getId());
@@ -64,32 +95,61 @@ function doPost(e) {
     
     try {
         const doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty('key'));
-        const sheet = doc.getSheetByName(SHEET_NAME);
-        const nextRow = sheet.getLastRow() + 1;
         
         // Parsear JSON del body (aunque el Content-Type sea text/plain)
         const data = JSON.parse(e.postData.contents || '{}');
         
-        const newRow = [
-            new Date(),
-            data.name || '',
-            data.email || '',
-            data.phone || '',
-            data.attending === 'yes' ? 'Sí' : 'No',
-            data.menu || '',
-            data.transport === 'yes' ? 'Sí' : 'No',
-            data.song || '',
-            data.message || ''
-        ];
-        
-        sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow]);
-        
-        return ContentService
-            .createTextOutput(JSON.stringify({
-                'result': 'success',
-                'row': nextRow
-            }))
-            .setMimeType(ContentService.MimeType.JSON);
+        // Determinar si es RSVP o Gift basado en formType
+        if (data.formType === 'gift') {
+            // Procesar formulario de regalos
+            const sheet = doc.getSheetByName(GIFTS_SHEET_NAME);
+            const nextRow = sheet.getLastRow() + 1;
+            
+            const newRow = [
+                new Date(),
+                data.contributorName || '',
+                data.contributorEmail || '',
+                data.giftType || '',
+                data.contributionAmount || 0,
+                data.contributionMessage || ''
+            ];
+            
+            sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow]);
+            
+            return ContentService
+                .createTextOutput(JSON.stringify({
+                    'result': 'success',
+                    'row': nextRow,
+                    'type': 'gift'
+                }))
+                .setMimeType(ContentService.MimeType.JSON);
+        } else {
+            // Procesar formulario RSVP (por defecto)
+            const sheet = doc.getSheetByName(RSVP_SHEET_NAME);
+            const nextRow = sheet.getLastRow() + 1;
+            
+            const newRow = [
+                new Date(),
+                data.name || '',
+                data.email || '',
+                data.phone || '',
+                data.attending === 'yes' ? 'Sí' : 'No',
+                data.menu || '',
+                data.transport === 'yes' ? 'Sí' : 'No',
+                data.song || '',
+                data.message || ''
+            ];
+            
+            sheet.getRange(nextRow, 1, 1, newRow.length).setValues([newRow]);
+            
+            return ContentService
+                .createTextOutput(JSON.stringify({
+                    'result': 'success',
+                    'row': nextRow,
+                    'type': 'rsvp'
+                }))
+                .setMimeType(ContentService.MimeType.JSON);
+        }
             
     } catch (e) {
         return ContentService
@@ -146,12 +206,18 @@ function doGet(e) {
 
 **Nota importante:** El código ya está configurado para usar `Content-Type: text/plain`, lo que evita los problemas de CORS preflight. No necesitas hacer cambios adicionales en el código JavaScript.
 
-## Paso 5: Prueba el formulario
+## Paso 5: Prueba los formularios
 
 1. Abre tu sitio web
-2. Completa el formulario RSVP
-3. Envía el formulario
-4. Verifica que los datos aparezcan en tu Google Sheet
+2. **Prueba RSVP:**
+   - Completa el formulario RSVP
+   - Envía el formulario
+   - Verifica que los datos aparezcan en la hoja "RSVP Responses"
+3. **Prueba Regalos:**
+   - Haz clic en "Contribuir" en cualquier regalo
+   - Completa el formulario con nombre, email y monto
+   - Envía el formulario
+   - Verifica que los datos aparezcan en la hoja "Gifts Responses"
 
 ## Solución de problemas
 
@@ -171,7 +237,7 @@ Si ves errores de CORS en la consola del navegador:
 - **Error 500 (Error interno)**: Revisa el código de `doPost` en Apps Script, especialmente la función `initialSetup()` debe haberse ejecutado al menos una vez
 - **Datos no aparecen**: 
   - Revisa la consola del navegador para ver errores específicos
-  - Verifica que la hoja se llame exactamente "RSVP Responses" (o el nombre que configuraste en `SHEET_NAME`)
+  - Verifica que las hojas se llamen exactamente "RSVP Responses" y "Gifts Responses" (o los nombres que configuraste)
   - Asegúrate de haber ejecutado `initialSetup()` la primera vez
 
 ## Notas de seguridad

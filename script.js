@@ -1,6 +1,7 @@
 // Google Sheets Configuration
 // IMPORTANTE: Reemplaza esta URL con la URL de tu Google Apps Script después de seguir las instrucciones en GOOGLE_SHEETS_SETUP.md
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx90WTcBNE2UpMTWkT4TZ3UtSuujnPx9U33BbKjgGHSAjb46yDSL_EjSGm7FZh0Ln9H/exec';
+// Esta URL maneja tanto RSVP como Regalos
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxsI9LrG7o2kmVl5mxtSfz681bpTkgMyQWiP3_Gi-SE-jtwVQ74B2Wz_K4-JzWQJbRd/exec';
 
 // Navigation Toggle (Desktop and Mobile)
 const hamburger = document.getElementById('hamburger');
@@ -127,12 +128,12 @@ function updateCountdown() {
     // Update countdown message based on time remaining
     const countdownMessage = document.querySelector('.countdown-message');
     if (days > 30) {
-        countdownMessage.textContent = '¡Faltan muchos días para nuestro gran día!';
-    } else if (days > 7) {
+        countdownMessage.textContent = '¡Aún faltan muchos días!';
+    } else if (days > 50) {
         countdownMessage.textContent = '¡Faltan pocos días para nuestro gran día!';
-    } else if (days > 1) {
+    } else if (days > 20) {
         countdownMessage.textContent = '¡Faltan muy pocos días para nuestro gran día!';
-    } else if (days === 1) {
+    } else if (days === 10) {
         countdownMessage.textContent = '¡Mañana es nuestro gran día!';
     } else if (days === 0) {
         countdownMessage.textContent = '¡Hoy es nuestro gran día!';
@@ -376,27 +377,47 @@ document.getElementById('giftForm').addEventListener('submit', async (e) => {
         };
         const giftType = giftTitles[giftTypeKey] || 'Aporte general';
         
-        // Enviar a Netlify Forms
-        const netlifyFormData = new FormData(e.target);
-        netlifyFormData.append('form-name', 'gift-form');
-        netlifyFormData.append('giftType', giftType);
+        // Validar que la URL de Google Sheets esté configurada
+        if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL === 'TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI') {
+            throw new Error('Por favor, configura la URL de Google Sheets en script.js. Consulta GOOGLE_SHEETS_SETUP.md para más información.');
+        }
+
+        // Preparar datos para Google Sheets
+        const contributionAmount = parseFloat(data.contributionAmount) || 0;
+        const payload = {
+            formType: 'gift', // Identificador para diferenciar de RSVP
+            contributorName: data.contributorName || '',
+            contributorEmail: data.contributorEmail || '',
+            contributionAmount: contributionAmount,
+            contributionMessage: data.contributionMessage || '',
+            giftType: giftType
+        };
         
-        const netlifyResponse = await fetch('/', {
+        // Enviar a Google Sheets via Google Apps Script
+        // Usamos text/plain para evitar preflight CORS (solicitudes simples no requieren OPTIONS)
+        const response = await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
-            body: netlifyFormData
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8',
+            },
+            body: JSON.stringify(payload)
         });
         
-        if (netlifyResponse.ok) {
-            console.log('✅ Contribución guardada en Netlify Forms');
-            
-            // Update progress bar with actual contribution amount
-            const contributionAmount = parseInt(data.contributionAmount);
-            updateProgressBarForGift(giftType, contributionAmount);
-            
-            showNotification(`¡Gracias por tu contribución de $${contributionAmount.toLocaleString()}! Se ha registrado exitosamente.`, 'success');
-            closeGiftModal();
+        if (response.ok) {
+            const result = await response.json();
+            if (result.result === 'success') {
+                console.log('✅ Contribución guardada en Google Sheets (fila:', result.row, ')');
+                
+                // Update progress bar
+                updateProgressBarForGift(giftType, contributionAmount);
+                
+                showNotification(`¡Gracias por tu contribución de $${contributionAmount.toLocaleString()}! Se ha registrado exitosamente.`, 'success');
+                closeGiftModal();
+            } else {
+                throw new Error(result.error || 'Error desconocido');
+            }
         } else {
-            throw new Error('Error al enviar formulario');
+            throw new Error('Error HTTP: ' + response.status);
         }
         
     } catch (error) {
