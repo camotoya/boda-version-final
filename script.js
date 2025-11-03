@@ -334,9 +334,9 @@ function closeGiftModal() {
 
 // Gift targets - Update these with your actual targets
 const GIFT_TARGETS = {
-    'Sofás para la sala': 5000000,
-    'Tiquetes de Luna de Miel': 5000000,
-    'Aporte general': 5000000
+    'Sofás para la sala': 10000000,
+    'Tiquetes de Luna de Miel': 6000000,
+    'Aporte general': 8000000
 };
 
 // Gift Form submission - Simplified: Only Netlify Forms + Update Progress Bar
