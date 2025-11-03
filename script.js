@@ -421,45 +421,67 @@ document.getElementById('giftForm').addEventListener('submit', async (e) => {
 
 // Update progress bar for a specific gift with actual amount
 function updateProgressBarForGift(giftType, contributionAmount) {
-    // Find the gift card that matches this gift type
-    const giftCards = document.querySelectorAll('.gift-card');
-    
-    giftCards.forEach(card => {
-        // Verificar que la tarjeta tenga un h3 antes de intentar leerlo
-        const cardTitleElement = card.querySelector('h3');
-        if (!cardTitleElement) {
-            // Esta tarjeta no tiene título h3 (como la tarjeta especial), saltarla
+    try {
+        // Find the gift card that matches this gift type
+        const giftCards = document.querySelectorAll('.gift-card');
+        
+        if (!giftCards || giftCards.length === 0) {
+            console.warn('No se encontraron tarjetas de regalo');
             return;
         }
         
-        const cardTitle = cardTitleElement.textContent;
-        if (cardTitle === giftType) {
-            const progressBar = card.querySelector('.progress-fill');
-            const progressPercentageElement = card.querySelector('.progress-percentage');
-            
-            // Solo actualizar si existe la barra de progreso
-            if (progressBar && progressPercentageElement) {
-                // Get current progress from data attribute or percentage text
-                const currentProgressText = progressPercentageElement.textContent;
-                const currentProgress = parseInt(currentProgressText.replace('%', '')) || 0;
-                const targetAmount = GIFT_TARGETS[giftType] || 1000000;
+        giftCards.forEach(card => {
+            try {
+                // Verificar que la tarjeta tenga un h3 antes de intentar leerlo
+                const cardTitleElement = card.querySelector('h3');
+                if (!cardTitleElement) {
+                    // Esta tarjeta no tiene título h3 (como la tarjeta especial), saltarla
+                    return;
+                }
                 
-                // Calculate current amount from percentage
-                const currentAmount = (currentProgress / 100) * targetAmount;
-                const newAmount = currentAmount + contributionAmount;
+                // Verificar que textContent existe antes de acceder
+                if (!cardTitleElement.textContent) {
+                    return;
+                }
                 
-                // Calculate new progress percentage (0-100%)
-                const newProgress = Math.min(Math.max((newAmount / targetAmount) * 100, 0), 100);
-                
-                // Update progress bar
-                progressBar.style.width = newProgress + '%';
-                progressBar.setAttribute('data-progress', Math.round(newProgress));
-                
-                // Update percentage text
-                progressPercentageElement.textContent = `${Math.round(newProgress)}%`;
+                const cardTitle = cardTitleElement.textContent.trim();
+                if (cardTitle === giftType) {
+                    const progressBar = card.querySelector('.progress-fill');
+                    const progressPercentageElement = card.querySelector('.progress-percentage');
+                    
+                    // Solo actualizar si existe la barra de progreso y el elemento de porcentaje
+                    if (progressBar && progressPercentageElement) {
+                        // Get current progress from data attribute or percentage text
+                        const currentProgressText = progressPercentageElement.textContent || '0%';
+                        const currentProgress = parseInt(currentProgressText.replace('%', '').trim()) || 0;
+                        const targetAmount = GIFT_TARGETS[giftType] || 1000000;
+                        
+                        // Calculate current amount from percentage
+                        const currentAmount = (currentProgress / 100) * targetAmount;
+                        const newAmount = currentAmount + contributionAmount;
+                        
+                        // Calculate new progress percentage (0-100%)
+                        const newProgress = Math.min(Math.max((newAmount / targetAmount) * 100, 0), 100);
+                        
+                        // Update progress bar
+                        progressBar.style.width = newProgress + '%';
+                        progressBar.setAttribute('data-progress', Math.round(newProgress));
+                        
+                        // Update percentage text
+                        progressPercentageElement.textContent = `${Math.round(newProgress)}%`;
+                    } else {
+                        console.warn(`No se encontró barra de progreso para: ${giftType}`);
+                    }
+                }
+            } catch (cardError) {
+                console.warn('Error procesando tarjeta de regalo:', cardError);
+                // Continuar con la siguiente tarjeta
             }
-        }
-    });
+        });
+    } catch (error) {
+        console.error('Error en updateProgressBarForGift:', error);
+        // No lanzar el error para no interrumpir el flujo
+    }
 }
 
 // Notification system
