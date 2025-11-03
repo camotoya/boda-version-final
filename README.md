@@ -2,6 +2,17 @@
 
 Página web moderna y elegante para la boda de Sofía & Camilo.
 
+## ✨ Versión 2.0 - Mejoras Implementadas
+
+Esta versión incluye mejoras significativas en:
+- 🎯 **SEO optimizado** para mejor visibilidad en buscadores
+- ♿ **Accesibilidad mejorada** siguiendo estándares WCAG
+- ⚡ **Rendimiento optimizado** con lazy loading y preload
+- 📱 **PWA** - Instalable como aplicación
+- 📝 **Formularios mejorados** con validación en tiempo real
+
+👉 Ver [IMPROVEMENTS.md](./IMPROVEMENTS.md) para detalles completos.
+
 ## 📍 Ubicación del Proyecto
 
 El proyecto está creado en Windows en la siguiente ubicación:
@@ -19,12 +30,17 @@ C:\Users\Administrador\Documents\sofia-camilo-wedding
 
 ## ✨ Características
 
-- Diseño responsive y elegante
-- Formularios conectados a Netlify Forms
-- Barras de progreso dinámicas para regalos
-- Mapas de Google Maps integrados
-- Sistema de notificaciones
-- Efectos animados y cuenta regresiva
+- ✅ Diseño responsive y elegante
+- ✅ Formularios conectados a Netlify Forms
+- ✅ Barras de progreso dinámicas para regalos
+- ✅ Mapas de Google Maps integrados
+- ✅ Sistema de notificaciones
+- ✅ Efectos animados y cuenta regresiva
+- ✅ **SEO optimizado** - Meta tags, Open Graph, Twitter Cards
+- ✅ **Accesibilidad mejorada** - ARIA labels, navegación por teclado
+- ✅ **PWA** - Progressive Web App con service worker
+- ✅ **Performance** - Lazy loading de imágenes, preload de recursos
+- ✅ **Structured Data** - Schema.org para mejor indexación
 
 ## 🚀 Próximos Pasos
 
@@ -83,4 +99,57 @@ C:\Users\Administrador\Documents\sofia-camilo-wedding
 - **Nombres**: Edita `index.html`
 - **Fechas**: Edita `script.js` (línea 44)
 - **Ubicaciones**: Edita direcciones y coordenadas en `script.js`
+- **Meta tags y SEO**: Edita los meta tags en el `<head>` de `index.html`
+- **URL del sitio**: Actualiza las URLs en los meta tags Open Graph y Twitter Cards con tu dominio real
+
+## 🆕 Mejoras Implementadas
+
+### SEO y Meta Tags
+- ✅ Meta tags completos (description, keywords, author)
+- ✅ Open Graph tags para compartir en Facebook
+- ✅ Twitter Cards para compartir en Twitter
+- ✅ Structured Data (Schema.org) para eventos
+- ✅ Robots.txt configurado
+- ✅ Sitemap listo para generar
+
+### Accesibilidad (WCAG)
+- ✅ ARIA labels en todos los elementos interactivos
+- ✅ Navegación por teclado mejorada
+- ✅ Roles y atributos semánticos correctos
+- ✅ Alt text descriptivo en todas las imágenes
+- ✅ Focus states visibles
+- ✅ Soporte para lectores de pantalla
+
+### Performance
+- ✅ Lazy loading en todas las imágenes
+- ✅ Preload de recursos críticos
+- ✅ Width y height en imágenes para evitar layout shift
+- ✅ Integrity checks en recursos externos
+
+### Progressive Web App (PWA)
+- ✅ Manifest.json configurado
+- ✅ Service Worker para funcionalidad offline
+- ✅ Iconos para instalación en dispositivos
+- ✅ Theme color configurado
+
+### Formularios
+- ✅ Validación en tiempo real mejorada
+- ✅ Feedback visual (colores verde/rojo)
+- ✅ Atributos aria-invalid para accesibilidad
+- ✅ Validación antes de enviar
+
+## 📱 Instalación como PWA
+
+Los usuarios pueden instalar la página como una aplicación en sus dispositivos:
+- **Mobile**: Aparecerá un banner de instalación
+- **Desktop**: Botón "Instalar" en la barra de direcciones
+- **Offline**: La página funcionará sin conexión después de la primera visita
+
+## 🔍 Verificación SEO
+
+Para verificar que todo está configurado correctamente:
+1. Usa [Google Rich Results Test](https://search.google.com/test/rich-results)
+2. Verifica Open Graph con [Facebook Debugger](https://developers.facebook.com/tools/debug/)
+3. Prueba Twitter Cards con [Twitter Card Validator](https://cards-dev.twitter.com/validator)
+4. Revisa accesibilidad con [WAVE](https://wave.webaim.org/)
 

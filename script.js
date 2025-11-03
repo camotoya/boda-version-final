@@ -3,14 +3,18 @@ const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('nav-menu');
 
 hamburger.addEventListener('click', () => {
+    const isActive = navMenu.classList.toggle('active');
     hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
+    hamburger.setAttribute('aria-expanded', isActive);
+    hamburger.setAttribute('aria-label', isActive ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
 });
 
 // Close mobile menu when clicking on a link
 document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
     hamburger.classList.remove('active');
     navMenu.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Abrir menú de navegación');
 }));
 
 // Smooth scrolling for navigation links
@@ -259,9 +263,6 @@ function openGiftModal(giftType) {
         'vajilla': 'Vajilla Completa',
         'ropa-cama': 'Ropa de Cama',
         'electrodomesticos': 'Electrodomésticos',
-        'auto': 'Fondo para Auto',
-        'ejercicio': 'Equipo de Ejercicio',
-        'biblioteca': 'Biblioteca',
         'fondo-general': 'Fondo General'
     };
     
@@ -284,9 +285,6 @@ const GIFT_TARGETS = {
     'Vajilla Completa': 1000000,
     'Ropa de Cama': 500000,
     'Electrodomésticos': 5000000,
-    'Fondo para Auto': 20000000,
-    'Equipo de Ejercicio': 1000000,
-    'Biblioteca': 500000,
     'Fondo General': 5000000
 };
 
@@ -318,9 +316,6 @@ document.getElementById('giftForm').addEventListener('submit', async (e) => {
             'vajilla': 'Vajilla Completa',
             'ropa-cama': 'Ropa de Cama',
             'electrodomesticos': 'Electrodomésticos',
-            'auto': 'Fondo para Auto',
-            'ejercicio': 'Equipo de Ejercicio',
-            'biblioteca': 'Biblioteca',
             'fondo-general': 'Fondo General'
         };
         const giftType = giftTitles[giftTypeKey] || 'Fondo General';
@@ -668,8 +663,12 @@ document.querySelectorAll('.image-placeholder').forEach(placeholder => {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         // Close mobile menu if open
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
+        if (navMenu && navMenu.classList.contains('active')) {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+            hamburger.setAttribute('aria-label', 'Abrir menú de navegación');
+        }
         
         // Close modal if open
         const modal = document.getElementById('giftModal');
@@ -677,7 +676,25 @@ document.addEventListener('keydown', (e) => {
             closeGiftModal();
         }
     }
+    
+    // Handle Enter key on map placeholders
+    if (e.key === 'Enter' && e.target.classList.contains('map-placeholder')) {
+        e.target.click();
+    }
 });
+
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+                console.log('Service Worker registered:', registration.scope);
+            })
+            .catch((error) => {
+                console.log('Service Worker registration failed:', error);
+            });
+    });
+}
 
 // Add loading animation to page
 window.addEventListener('load', () => {
@@ -771,28 +788,77 @@ function validatePhone(phone) {
     return re.test(phone.replace(/\s/g, ''));
 }
 
-// Enhanced form validation
-document.querySelectorAll('input[type="email"]').forEach(input => {
-    input.addEventListener('blur', () => {
-        if (input.value && !validateEmail(input.value)) {
-            input.style.borderColor = '#dc3545';
-            showNotification('Por favor, ingresa un email válido.', 'error');
-        } else {
-            input.style.borderColor = '#d4af37';
-        }
+// Enhanced form validation with better UX
+function setupFormValidation() {
+    // Email validation
+    document.querySelectorAll('input[type="email"]').forEach(input => {
+        input.addEventListener('blur', () => {
+            const isValid = !input.value || validateEmail(input.value);
+            if (!isValid) {
+                input.style.borderColor = '#dc3545';
+                input.setAttribute('aria-invalid', 'true');
+                showNotification('Por favor, ingresa un email válido.', 'error');
+            } else {
+                input.style.borderColor = input.value ? '#28a745' : '#e0e0e0';
+                input.setAttribute('aria-invalid', 'false');
+            }
+        });
+        
+        input.addEventListener('input', () => {
+            if (input.getAttribute('aria-invalid') === 'true') {
+                const isValid = validateEmail(input.value);
+                if (isValid) {
+                    input.style.borderColor = '#28a745';
+                    input.setAttribute('aria-invalid', 'false');
+                }
+            }
+        });
     });
-});
 
-document.querySelectorAll('input[type="tel"]').forEach(input => {
-    input.addEventListener('blur', () => {
-        if (input.value && !validatePhone(input.value)) {
-            input.style.borderColor = '#dc3545';
-            showNotification('Por favor, ingresa un teléfono válido.', 'error');
-        } else {
-            input.style.borderColor = '#d4af37';
-        }
+    // Phone validation
+    document.querySelectorAll('input[type="tel"]').forEach(input => {
+        input.addEventListener('blur', () => {
+            const isValid = !input.value || validatePhone(input.value);
+            if (!isValid) {
+                input.style.borderColor = '#dc3545';
+                input.setAttribute('aria-invalid', 'true');
+                showNotification('Por favor, ingresa un teléfono válido.', 'error');
+            } else {
+                input.style.borderColor = input.value ? '#28a745' : '#e0e0e0';
+                input.setAttribute('aria-invalid', 'false');
+            }
+        });
+        
+        input.addEventListener('input', () => {
+            if (input.getAttribute('aria-invalid') === 'true') {
+                const isValid = validatePhone(input.value);
+                if (isValid) {
+                    input.style.borderColor = '#28a745';
+                    input.setAttribute('aria-invalid', 'false');
+                }
+            }
+        });
     });
-});
+    
+    // Required field validation
+    document.querySelectorAll('input[required], textarea[required], select[required]').forEach(field => {
+        field.addEventListener('invalid', (e) => {
+            e.preventDefault();
+            field.style.borderColor = '#dc3545';
+            field.setAttribute('aria-invalid', 'true');
+        });
+        
+        field.addEventListener('input', () => {
+            if (field.checkValidity()) {
+                field.style.borderColor = '#28a745';
+                field.setAttribute('aria-invalid', 'false');
+            }
+        });
+    });
+}
+
+// Initialize form validation
+setupFormValidation();
 
 // Add smooth reveal animation for sections
 const revealObserver = new IntersectionObserver((entries) => {
