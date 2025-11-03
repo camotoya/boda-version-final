@@ -41,11 +41,22 @@ body {
     position: relative;
 }
 
+.nav-logo a {
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.3s ease;
+}
+
+.nav-logo a:hover {
+    opacity: 0.8;
+}
+
 .nav-logo h2 {
     font-family: 'Dancing Script', cursive;
     font-size: 2rem;
     color: #d4af37;
     font-weight: 700;
+    margin: 0;
 }
 
 .menu-toggle {
@@ -649,6 +660,26 @@ body {
 .gift-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.gift-card-special {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.gift-card-special .gift-description {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+    text-align: center;
+}
+
+.gift-card-special .gift-description strong {
+    color: #d4af37;
+    font-weight: 600;
 }
 
 .gift-image {
@@ -1263,7 +1294,7 @@ body {
         min-width: 280px;
         text-align: left;
         box-shadow: 0 10px 27px rgba(0,0,0,0.15);
-        padding: 1.5rem 0;
+        padding: 0.5rem 0;
         border-radius: 10px;
         opacity: 0;
         visibility: hidden;
@@ -1283,12 +1314,12 @@ body {
 
     .nav-menu li {
         width: 100%;
-        padding: 0 1.5rem;
+        padding: 0 1.25rem;
     }
 
     .nav-link {
         display: block;
-        padding: 0.75rem 0;
+        padding: 0.35rem 0;
         border-bottom: 1px solid rgba(0,0,0,0.05);
     }
 
@@ -1417,6 +1448,14 @@ body {
     .gift-card h3 {
         font-size: 1.3rem;
         min-height: calc(1.3rem * 1.4 * 2); /* Ajustar altura para móvil */
+    }
+
+    .gift-card-special {
+        padding: 1.5rem;
+    }
+
+    .gift-card-special .gift-description {
+        font-size: 0.9rem;
     }
 
     .gift-description {
