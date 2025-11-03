@@ -597,13 +597,14 @@ body {
     border: 2px solid #d4af37;
     border-radius: 15px;
     padding: 1.5rem;
-    margin-top: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    margin-top: 3rem;
+    text-align: center;
     box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
     position: relative;
     overflow: hidden;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .gifts-alternative::before {
@@ -614,23 +615,6 @@ body {
     right: 0;
     height: 4px;
     background: linear-gradient(90deg, #d4af37, #f4e4bc);
-}
-
-.alternative-icon {
-    flex-shrink: 0;
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #d4af37, #f4e4bc);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-}
-
-.alternative-icon i {
-    font-size: 1.5rem;
-    color: white;
 }
 
 .gifts-alternative p {
@@ -687,6 +671,12 @@ body {
     height: 100%;
     object-fit: cover;
     border-radius: 15px;
+}
+
+.gift-photo.amazon-logo-img {
+    object-fit: contain;
+    background: white;
+    padding: 1rem;
 }
 
 .gift-icon-overlay {
@@ -799,10 +789,16 @@ body {
     font-weight: 600;
     transition: transform 0.3s ease;
     width: 100%;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    font-size: 1rem;
+    font-family: inherit;
 }
 
 .gift-button:hover {
     transform: translateY(-2px);
+    color: white;
 }
 
 /* RSVP Section */
@@ -1404,13 +1400,8 @@ body {
     }
 
     .gifts-alternative {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-    }
-
-    .alternative-icon {
-        align-self: center;
+        padding: 1.25rem;
+        margin-top: 2rem;
     }
 
     .rsvp-form {

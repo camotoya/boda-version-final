@@ -315,11 +315,8 @@ function openGiftModal(giftType) {
     
     // Set modal title based on gift type
     const giftTitles = {
-        'luna-miel': 'Tiquetes de Luna de Miel',
         'muebles': 'Sofás para la sala',
-        'vajilla': 'Vajilla & Cristalería',
-        'ropa-cama': 'Ropa de cama & baño (blancos)',
-        'electrodomesticos': 'Electrodomésticos & Limpieza del hogar',
+        'luna-miel': 'Tiquetes de Luna de Miel',
         'fondo-general': 'Aporte general'
     };
     
@@ -337,11 +334,8 @@ function closeGiftModal() {
 
 // Gift targets - Update these with your actual targets
 const GIFT_TARGETS = {
-    'Tiquetes de Luna de Miel': 5000000,
     'Sofás para la sala': 5000000,
-    'Vajilla & Cristalería': 1000000,
-    'Ropa de cama & baño (blancos)': 500000,
-    'Electrodomésticos & Limpieza del hogar': 5000000,
+    'Tiquetes de Luna de Miel': 5000000,
     'Aporte general': 5000000
 };
 
@@ -368,11 +362,8 @@ document.getElementById('giftForm').addEventListener('submit', async (e) => {
         const modal = document.getElementById('giftModal');
         const giftTypeKey = modal.dataset.giftType;
         const giftTitles = {
-            'luna-miel': 'Tiquetes de Luna de Miel',
             'muebles': 'Sofás para la sala',
-            'vajilla': 'Vajilla & Cristalería',
-            'ropa-cama': 'Ropa de cama & baño (blancos)',
-            'electrodomesticos': 'Electrodomésticos & Limpieza del hogar',
+            'luna-miel': 'Tiquetes de Luna de Miel',
             'fondo-general': 'Aporte general'
         };
         const giftType = giftTitles[giftTypeKey] || 'Aporte general';
