@@ -266,10 +266,11 @@ rsvpForm.addEventListener('submit', async (e) => {
         };
         
         // Enviar a Google Sheets via Google Apps Script
+        // Usamos text/plain para evitar preflight CORS (solicitudes simples no requieren OPTIONS)
         const response = await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'text/plain;charset=utf-8',
             },
             body: JSON.stringify(payload)
         });
@@ -736,6 +737,8 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Register Service Worker for PWA
+// Deshabilitado temporalmente - Descomentar cuando sw.js esté disponible
+/*
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
@@ -747,6 +750,7 @@ if ('serviceWorker' in navigator) {
             });
     });
 }
+*/
 
 // Add loading animation to page
 window.addEventListener('load', () => {

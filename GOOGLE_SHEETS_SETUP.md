@@ -67,7 +67,8 @@ function doPost(e) {
         const sheet = doc.getSheetByName(SHEET_NAME);
         const nextRow = sheet.getLastRow() + 1;
         
-        const data = JSON.parse(e.postData.contents);
+        // Parsear JSON del body (aunque el Content-Type sea text/plain)
+        const data = JSON.parse(e.postData.contents || '{}');
         
         const newRow = [
             new Date(),
@@ -88,12 +89,7 @@ function doPost(e) {
                 'result': 'success',
                 'row': nextRow
             }))
-            .setMimeType(ContentService.MimeType.JSON)
-            .setHeaders({
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST',
-                'Access-Control-Allow-Headers': 'Content-Type'
-            });
+            .setMimeType(ContentService.MimeType.JSON);
             
     } catch (e) {
         return ContentService
@@ -101,12 +97,7 @@ function doPost(e) {
                 'result': 'error',
                 'error': e.toString()
             }))
-            .setMimeType(ContentService.MimeType.JSON)
-            .setHeaders({
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST',
-                'Access-Control-Allow-Headers': 'Content-Type'
-            });
+            .setMimeType(ContentService.MimeType.JSON);
     } finally {
         lock.releaseLock();
     }
@@ -124,21 +115,36 @@ function doGet(e) {
 
 ## Paso 3: Desplegar como Web App
 
+**⚠️ IMPORTANTE: Este paso es crucial para que funcione**
+
 1. En Apps Script, haz clic en **Implementar → Nueva implementación**
 2. Selecciona:
    - **Tipo**: Aplicación web
    - **Nombre**: RSVP Web App (o el que prefieras)
    - **Ejecutar como**: Yo (tu cuenta)
-   - **Quién tiene acceso**: Cualquiera
+   - **Quién tiene acceso**: **Cualquiera (incluso anónimo)** ← **ESTO ES CRÍTICO**
 3. Haz clic en **Implementar**
-4. Copia la **URL de la aplicación web** (algo como: `https://script.google.com/macros/s/.../exec`)
+4. Copia la **URL de la aplicación web** (debe terminar en `/exec`, algo como: `https://script.google.com/macros/s/.../exec`)
 5. Esta URL será tu endpoint
+
+**Nota sobre re-despliegues:** Cada vez que hagas cambios en el código de Apps Script, debes:
+- Guardar el proyecto
+- Ir a **Implementar → Administrar implementaciones**
+- Editar la implementación existente o crear una nueva
+- Asegurarte de que "Quién tiene acceso" siga siendo "Cualquiera"
+- Guardar una nueva versión antes de desplegar
 
 ## Paso 4: Configurar en el sitio web
 
 1. Abre el archivo `script.js`
-2. Busca la variable `GOOGLE_SHEETS_URL` (o crea una nueva constante)
-3. Reemplaza la URL con la que obtuviste en el paso 3
+2. Busca la constante `GOOGLE_SHEETS_URL` en la línea 3
+3. Reemplaza `'TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI'` con la URL que obtuviste en el paso 3
+4. Debe quedar algo como:
+   ```javascript
+   const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwjnKwxgm9qgDN8iXdVgEjPyEg51CnBzdYmEiRgVvpabGYnCrRoeGQbPrngfxvG7-6Q/exec';
+   ```
+
+**Nota importante:** El código ya está configurado para usar `Content-Type: text/plain`, lo que evita los problemas de CORS preflight. No necesitas hacer cambios adicionales en el código JavaScript.
 
 ## Paso 5: Prueba el formulario
 
@@ -149,9 +155,24 @@ function doGet(e) {
 
 ## Solución de problemas
 
-- **Error 401 (No autorizado)**: Asegúrate de que la aplicación web tenga acceso público
+### Error CORS (Access-Control-Allow-Origin)
+
+Si ves errores de CORS en la consola del navegador:
+
+1. **Verifica el despliegue**: Asegúrate de que la aplicación web tenga acceso "Cualquiera (incluso anónimo)"
+2. **Re-despliega**: Guarda una nueva versión y vuelve a desplegar
+3. **Verifica el Content-Type**: En la consola del navegador (pestaña Network), confirma que el request tenga `Content-Type: text/plain;charset=utf-8`. Si ves `application/json`, hay un problema con el código JavaScript
+4. **Limpia la caché**: Prueba en una ventana privada/incógnito
+
+### Otros errores comunes
+
+- **Error 401 (No autorizado)**: Asegúrate de que la aplicación web tenga acceso público ("Cualquiera")
 - **Error 405 (Método no permitido)**: Verifica que estés usando POST, no GET
-- **Datos no aparecen**: Revisa la consola del navegador para ver errores específicos
+- **Error 500 (Error interno)**: Revisa el código de `doPost` en Apps Script, especialmente la función `initialSetup()` debe haberse ejecutado al menos una vez
+- **Datos no aparecen**: 
+  - Revisa la consola del navegador para ver errores específicos
+  - Verifica que la hoja se llame exactamente "RSVP Responses" (o el nombre que configuraste en `SHEET_NAME`)
+  - Asegúrate de haber ejecutado `initialSetup()` la primera vez
 
 ## Notas de seguridad
 
