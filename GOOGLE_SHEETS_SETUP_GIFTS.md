@@ -106,23 +106,33 @@ function doGet(e) {
 
 ## Paso 3: Desplegar como Web App
 
-**⚠️ IMPORTANTE: Este paso es crucial para que funcione**
+**⚠️ IMPORTANTE: Este paso es crucial y debe hacerse EXACTAMENTE igual que el de RSVP**
 
 1. En Apps Script, haz clic en **Implementar → Nueva implementación**
 2. Selecciona:
    - **Tipo**: Aplicación web
    - **Nombre**: Gifts Web App (o el que prefieras)
    - **Ejecutar como**: Yo (tu cuenta)
-   - **Quién tiene acceso**: **Cualquiera (incluso anónimo)** ← **ESTO ES CRÍTICO**
+   - **Quién tiene acceso**: **Cualquiera (incluso anónimo)** ← **ESTO ES ABSOLUTAMENTE CRÍTICO**
 3. Haz clic en **Implementar**
 4. Copia la **URL de la aplicación web** (debe terminar en `/exec`, algo como: `https://script.google.com/macros/s/.../exec`)
 5. Esta URL será tu endpoint para regalos
+
+**⚠️ PASOS CRÍTICOS PARA EVITAR CORS:**
+
+Si ya desplegaste anteriormente y tienes errores CORS:
+1. Ve a **Implementar → Administrar implementaciones**
+2. Haz clic en el lápiz (Editar) junto a tu implementación
+3. Verifica que "Quién tiene acceso" sea **"Cualquiera (incluso anónimo)"**
+4. Si no lo es, cámbialo y guarda
+5. Si ya está bien pero sigue dando error, crea una **Nueva implementación** (esto genera una nueva URL)
+6. Copia la nueva URL y actualízala en `script.js`
 
 **Nota sobre re-despliegues:** Cada vez que hagas cambios en el código de Apps Script, debes:
 - Guardar el proyecto
 - Ir a **Implementar → Administrar implementaciones**
 - Editar la implementación existente o crear una nueva
-- Asegurarte de que "Quién tiene acceso" siga siendo "Cualquiera"
+- Asegurarte de que "Quién tiene acceso" siga siendo "Cualquiera (incluso anónimo)"
 - Guardar una nueva versión antes de desplegar
 
 ## Paso 4: Configurar en el sitio web
