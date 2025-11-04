@@ -522,6 +522,46 @@ function closeGiftModal() {
     document.getElementById('giftForm').reset();
 }
 
+// Liverpool Modal Functions
+function openLiverpoolModal() {
+    const modal = document.getElementById('liverpoolModal');
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    // Reset copy feedback
+    const copyFeedback = document.getElementById('copy-feedback');
+    if (copyFeedback) {
+        copyFeedback.style.display = 'none';
+    }
+}
+
+function closeLiverpoolModal() {
+    const modal = document.getElementById('liverpoolModal');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function copyLiverpoolEventNumber() {
+    const eventNumber = document.getElementById('liverpool-event-number').textContent;
+    const copyFeedback = document.getElementById('copy-feedback');
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(eventNumber).then(() => {
+        // Show feedback
+        if (copyFeedback) {
+            copyFeedback.style.display = 'block';
+            setTimeout(() => {
+                copyFeedback.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Show notification
+        showNotification('Número de evento copiado al portapapeles', 'success');
+    }).catch(err => {
+        console.error('Error al copiar:', err);
+        showNotification('Error al copiar. Por favor, copia el número manualmente.', 'error');
+    });
+}
+
 // Gift targets - Update these with your actual targets
 const GIFT_TARGETS = {
     'Sofás para la sala': 10000000,
@@ -982,16 +1022,36 @@ document.addEventListener('keydown', (e) => {
             hamburger.setAttribute('aria-label', 'Abrir menú de navegación');
         }
         
-        // Close modal if open
-        const modal = document.getElementById('giftModal');
-        if (modal && modal.style.display === 'block') {
+        // Close modals if open
+        const giftModal = document.getElementById('giftModal');
+        if (giftModal && giftModal.style.display === 'block') {
             closeGiftModal();
+        }
+        const liverpoolModal = document.getElementById('liverpoolModal');
+        if (liverpoolModal && liverpoolModal.style.display === 'block') {
+            closeLiverpoolModal();
         }
     }
     
     // Handle Enter key on map placeholders
     if (e.key === 'Enter' && e.target.classList.contains('map-placeholder')) {
         e.target.click();
+    }
+});
+
+// Close modals when clicking outside
+window.addEventListener('click', (e) => {
+    const giftModal = document.getElementById('giftModal');
+    const liverpoolModal = document.getElementById('liverpoolModal');
+    
+    // Close gift modal if clicking outside
+    if (giftModal && e.target === giftModal) {
+        closeGiftModal();
+    }
+    
+    // Close Liverpool modal if clicking outside
+    if (liverpoolModal && e.target === liverpoolModal) {
+        closeLiverpoolModal();
     }
 });
 

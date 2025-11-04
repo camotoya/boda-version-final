@@ -317,12 +317,30 @@
             
             <div class="gifts-grid">
                 <div class="gift-card">
-                    <h3>Lista de regalos de Amazon</h3>
+                    <h3>Lista de Amazon</h3>
                     <p class="gift-description">Por si nos quieres regalar algo específico.</p>
                     <div class="gift-image">
                         <img src="assets/images/amazon-logo.png" alt="Lista de regalos de Amazon" class="gift-photo amazon-logo-img" loading="lazy" width="300" height="200">
                     </div>
                     <a href="https://www.amazon.com.mx/wedding/share/sofiycami" target="_blank" rel="noopener noreferrer" class="gift-button" aria-label="Ver lista de regalos de Amazon">Ver lista</a>
+                </div>
+
+                <div class="gift-card">
+                    <h3>Lista de Liverpool</h3>
+                    <p class="gift-description">Estamos construyendo nuestra casa en CDMX.</p>
+                    <div class="gift-image">
+                        <img src="assets/images/liverpool-logo.jpg" alt="Lista de regalos de Liverpool" class="gift-photo amazon-logo-img" loading="lazy" width="300" height="200">
+                    </div>
+                    <button class="gift-button" onclick="openLiverpoolModal()" aria-label="Ver lista de regalos de Liverpool">Ver lista</button>
+                </div>
+
+                <div class="gift-card gift-card-no-progress">
+                    <h3>Aporte general</h3>
+                    <p class="gift-description">Para completar lo que haga falta en este primer empujón de nuestro nuevo hogar.</p>
+                    <div class="gift-image">
+                        <img src="assets/images/regalo3.jpg" alt="Aporte general" class="gift-photo" loading="lazy" width="300" height="200">
+                    </div>
+                    <button class="gift-button" onclick="openGiftModal('fondo-general')" aria-label="Contribuir a Aporte general">Contribuir</button>
                 </div>
 
                 <div class="gift-card">
@@ -359,15 +377,6 @@
                         </div>
                     </div>
                     <button class="gift-button" onclick="openGiftModal('luna-miel')" aria-label="Contribuir a Tiquetes de Luna de Miel">Contribuir</button>
-                </div>
-
-                <div class="gift-card gift-card-no-progress">
-                    <h3>Aporte general</h3>
-                    <p class="gift-description">Para completar lo que haga falta en este primer empujón de nuestro nuevo hogar.</p>
-                    <div class="gift-image">
-                        <img src="assets/images/regalo3.jpg" alt="Aporte general" class="gift-photo" loading="lazy" width="300" height="200">
-                    </div>
-                    <button class="gift-button" onclick="openGiftModal('fondo-general')" aria-label="Contribuir a Aporte general">Contribuir</button>
                 </div>
 
                 <div class="gift-card gift-card-special">
@@ -519,6 +528,36 @@
             <p>&copy; 2026 Sofía & Camilo. Hecho con ❤️ para nuestro gran día.</p>
         </div>
     </footer>
+
+    <!-- Modal para Liverpool -->
+    <div id="liverpoolModal" class="modal">
+        <div class="modal-content">
+            <button type="button" class="close" onclick="closeLiverpoolModal()" aria-label="Cerrar modal">&times;</button>
+            <h3>Lista de Liverpool</h3>
+            
+            <div class="bank-info" style="text-align: center;">
+                <h4>Número de Evento</h4>
+                <div class="bank-details" style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin: 1.5rem 0;">
+                    <p style="font-size: 1.5rem; font-weight: bold; color: #2d5016; margin: 0.5rem 0;">
+                        <span id="liverpool-event-number">51744420</span>
+                    </p>
+                    <button type="button" onclick="copyLiverpoolEventNumber()" class="submit-btn" style="margin-top: 1rem; background: #d4af37; border: none; padding: 0.75rem 2rem; font-size: 1rem;">
+                        <i class="fas fa-copy" style="margin-right: 0.5rem;"></i>Copiar número
+                    </button>
+                    <p id="copy-feedback" style="margin-top: 0.5rem; color: #28a745; font-size: 0.9rem; display: none;">
+                        ✓ Número copiado al portapapeles
+                    </p>
+                </div>
+                <p class="bank-note">Por favor, copia el número de evento y úsalo para buscar nuestra mesa de regalos en Liverpool.</p>
+            </div>
+            
+            <div class="modal-buttons" style="justify-content: center; margin-top: 2rem;">
+                <a href="https://mesaderegalos.liverpool.com.mx/eventodebusqueda" target="_blank" rel="noopener noreferrer" class="submit-btn" style="text-decoration: none; display: inline-block;">
+                    Ir a Liverpool
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal para Regalos -->
     <div id="giftModal" class="modal">
