@@ -183,7 +183,7 @@
 
             <div class="story-item reverse">
                 <div class="story-text">
-                    <h3>El Reencuentro Inesperado</h3>
+                    <h3>El reencuentro inesperado</h3>
                     <p>Casi una década después hicieron match en Bumble. La conversación fluyó, y cuando decidieron pasar a WhatsApp, llegó el flashback de Camilo: el contacto de Sofía ya estaba ahí, ya había guardado el numero de su futura esposa hace muchos años. Siguieron hablando y tuvieron una primera cita de esas que se sienten familiares: risas, coincidencias y un beso al final que Sofía recibió con una risa cómplice. Al día siguiente, Camilo se silenció más de lo debido y a las cinco de la tarde Sofi escribió: “¿cómo así que me das un beso y desapareces?”.  Desde entonces, Camilo se esmeró por dejar claro que el interés era mutuo. Esa pequeña anécdota se convirtió en una historia graciosa que aún recuerdan con cariño.</p>
                 </div>
                 <div class="story-image">
@@ -299,7 +299,7 @@
     <!-- Mesa de Regalos -->
     <section id="regalos" class="gifts">
         <div class="container">
-            <h2 class="section-title">Mesa de Regalos</h2>
+            <h2 class="section-title">Mesa de regalos</h2>
             <div class="gifts-intro">
                 <p>El mejor regalo es que compartas este día de celebración con nosotros. Si además quieres contribuir a un regalo, cada aporte se destinará directamente al que elijas.</p>
             </div>
@@ -322,7 +322,8 @@
                     </div>
                     <div class="progress-container">
                         <div class="progress-bar">
-                            <div class="progress-fill" data-progress="0"></div>
+                            <div class="progress-fill-base" data-progress="0"></div>
+                            <div class="progress-fill-contribution" data-contribution="0"></div>
                         </div>
                         <div class="progress-text">
                             <span class="progress-percentage">0%</span>
@@ -339,7 +340,8 @@
                     </div>
                     <div class="progress-container">
                         <div class="progress-bar">
-                            <div class="progress-fill" data-progress="0"></div>
+                            <div class="progress-fill-base" data-progress="0"></div>
+                            <div class="progress-fill-contribution" data-contribution="0"></div>
                         </div>
                         <div class="progress-text">
                             <span class="progress-percentage">0%</span>
@@ -348,19 +350,11 @@
                     <button class="gift-button" onclick="openGiftModal('luna-miel')" aria-label="Contribuir a Tiquetes de Luna de Miel">Contribuir</button>
                 </div>
 
-                <div class="gift-card">
+                <div class="gift-card gift-card-no-progress">
                     <h3>Aporte general</h3>
                     <p class="gift-description">Para completar lo que haga falta en este primer empujón de nuestro nuevo hogar.</p>
                     <div class="gift-image">
                         <img src="assets/images/regalo3.jpg" alt="Aporte general" class="gift-photo" loading="lazy" width="300" height="200">
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-progress="0"></div>
-                        </div>
-                        <div class="progress-text">
-                            <span class="progress-percentage">0%</span>
-                        </div>
                     </div>
                     <button class="gift-button" onclick="openGiftModal('fondo-general')" aria-label="Contribuir a Aporte general">Contribuir</button>
                 </div>
@@ -480,6 +474,30 @@
                 <div class="gallery-item">
                     <img src="assets/images/galeria8.jpg" alt="Galería - Foto 8" class="gallery-photo" loading="lazy">
                 </div>
+                <div class="gallery-item">
+                    <img src="assets/images/galeria9.jpg" alt="Galería - Foto 9" class="gallery-photo" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/images/galeria10.jpg" alt="Galería - Foto 10" class="gallery-photo" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/images/galeria11.jpg" alt="Galería - Foto 11" class="gallery-photo" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/images/galeria12.jpg" alt="Galería - Foto 12" class="gallery-photo" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/images/galeria13.jpg" alt="Galería - Foto 13" class="gallery-photo" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/images/galeria14.jpg" alt="Galería - Foto 14" class="gallery-photo" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/images/galeria15.jpg" alt="Galería - Foto 15" class="gallery-photo" loading="lazy">
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/images/galeria16.jpg" alt="Galería - Foto 16" class="gallery-photo" loading="lazy">
+                </div>
             </div>
         </div>
     </section>
@@ -500,11 +518,11 @@
             <div class="bank-info">
                 <h4>Información para Transferencia Bancaria</h4>
                 <div class="bank-details">
-                    <p><strong>Banco:</strong> Bancolombia</p>
-                    <p><strong>Número de cuenta:</strong> 04884246721</p>
-                    <p><strong>Clave:</strong> @otoya232</p>
-                    <p><strong>Titular:</strong> Camilo Otoya Cabrera</p>
-                    <p><strong>Documento:</strong> Cédula 1018459232</p>
+                    <p><strong>Banco:</strong> <span id="bank-name">Bancolombia</span></p>
+                    <p><strong>Número de cuenta:</strong> <span id="bank-account">04884246721</span></p>
+                    <p><strong>Llave:</strong> <span id="bank-key">@otoya232</span></p>
+                    <p><strong>Titular:</strong> <span id="bank-holder">Camilo Otoya Cabrera</span></p>
+                    <p><strong>Documento:</strong> <span id="bank-document">Cédula 1018459232</span></p>
                 </div>
                 <p class="bank-note">Realiza tu transferencia y luego completa el formulario para registrar tu aporte.</p>
             </div>

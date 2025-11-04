@@ -163,7 +163,60 @@ function updateCountdown() {
 // Initialize countdown timer
 function initCountdown() {
     updateCountdown();
-    setInterval(updateCountdown, 1000);
+    setInterval(() => {
+        updateCountdown();
+        // Update progress bars daily (check once per hour to avoid excessive updates)
+        const now = new Date();
+        if (now.getMinutes() === 0) {
+            updateBaseProgress();
+        }
+    }, 1000);
+}
+
+// Update base progress bars based on current date
+function updateBaseProgress() {
+    const baseProgress = calculateBaseProgress();
+    const baseBars = document.querySelectorAll('.progress-fill-base');
+    
+    baseBars.forEach(bar => {
+        const currentBase = parseInt(bar.getAttribute('data-progress') || '0');
+        if (currentBase !== baseProgress) {
+            // Find the gift card this bar belongs to
+            const giftCard = bar.closest('.gift-card');
+            if (!giftCard) return;
+            
+            // Skip cards without progress
+            if (giftCard.classList.contains('gift-card-no-progress')) return;
+            
+            const cardTitleElement = giftCard.querySelector('h3');
+            if (!cardTitleElement) return;
+            
+            const giftType = cardTitleElement.textContent.trim();
+            const differentiation = getProductDifferentiation(giftType);
+            
+            // Calculate total base (base progress + differentiation)
+            const totalBase = Math.min(100, baseProgress + differentiation);
+            
+            bar.style.width = totalBase + '%';
+            bar.setAttribute('data-progress', baseProgress);
+            bar.setAttribute('data-differentiation', differentiation);
+            bar.setAttribute('data-total-base', totalBase);
+            
+            // Update contribution bar position
+            const contributionBar = giftCard.querySelector('.progress-fill-contribution');
+            if (contributionBar) {
+                const contributionPercent = parseFloat(contributionBar.style.width?.replace('%', '') || '0');
+                contributionBar.style.left = totalBase + '%';
+                
+                // Update total percentage display
+                const progressPercentageElement = giftCard.querySelector('.progress-percentage');
+                if (progressPercentageElement) {
+                    const totalProgress = Math.min(100, totalBase + contributionPercent);
+                    progressPercentageElement.textContent = `${Math.round(totalProgress)}%`;
+                }
+            }
+        }
+    });
 }
 
 // Navbar scroll effect
@@ -201,13 +254,100 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeProgressBars();
 });
 
-// Initialize progress bars with animation
+// Calculate base progress percentage based on days remaining until wedding
+// Formula: 0% at 70 days, 100% at 0 days
+function calculateBaseProgress() {
+    const weddingDate = new Date('2026-01-09T13:30:00').getTime();
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+    
+    if (distance < 0) {
+        // Wedding has passed, show 100%
+        return 100;
+    }
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    
+    // If more than 70 days, show 0%
+    if (days > 70) {
+        return 0;
+    }
+    
+    // Linear progression from 0% (70 days) to 100% (0 days)
+    // Formula: progress = 100 * (1 - days/70)
+    const baseProgress = Math.max(0, Math.min(100, 100 * (1 - days / 70)));
+    
+    return Math.round(baseProgress);
+}
+
+// Get product differentiation percentage based on gift type
+function getProductDifferentiation(giftType) {
+    const differentiation = {
+        'Sofás para la sala': 7,
+        'Tiquetes de Luna de Miel': 0,
+        'Aporte general': 0
+    };
+    return differentiation[giftType] || 0;
+}
+
+// Initialize progress bars with base progress from date + product differentiation
 function initializeProgressBars() {
-    const progressBars = document.querySelectorAll('.progress-fill');
-    progressBars.forEach(bar => {
-        const progress = bar.getAttribute('data-progress');
-        bar.style.setProperty('--progress-width', progress + '%');
-        bar.style.width = progress + '%';
+    const baseProgress = calculateBaseProgress();
+    const baseBars = document.querySelectorAll('.progress-fill-base');
+    
+    baseBars.forEach(bar => {
+        // Find the gift card this bar belongs to
+        const giftCard = bar.closest('.gift-card');
+        if (!giftCard) return;
+        
+        // Skip cards without progress (like "Aporte general")
+        if (giftCard.classList.contains('gift-card-no-progress')) return;
+        
+        const cardTitleElement = giftCard.querySelector('h3');
+        if (!cardTitleElement) return;
+        
+        const giftType = cardTitleElement.textContent.trim();
+        const differentiation = getProductDifferentiation(giftType);
+        
+        // Calculate total base (base progress + differentiation)
+        const totalBase = Math.min(100, baseProgress + differentiation);
+        
+        bar.style.width = totalBase + '%';
+        bar.setAttribute('data-progress', baseProgress);
+        bar.setAttribute('data-differentiation', differentiation);
+        bar.setAttribute('data-total-base', totalBase);
+    });
+    
+    // Initialize contribution bars at 0
+    const contributionBars = document.querySelectorAll('.progress-fill-contribution');
+    contributionBars.forEach(bar => {
+        const giftCard = bar.closest('.gift-card');
+        if (!giftCard) return;
+        
+        // Skip cards without progress
+        if (giftCard.classList.contains('gift-card-no-progress')) return;
+        
+        const baseBar = giftCard.querySelector('.progress-fill-base');
+        const totalBase = parseInt(baseBar?.getAttribute('data-total-base') || '0');
+        
+        bar.style.width = '0%';
+        bar.style.left = totalBase + '%';
+        bar.setAttribute('data-contribution', 0);
+    });
+    
+    // Update percentage display (base + differentiation initially)
+    const percentageElements = document.querySelectorAll('.progress-percentage');
+    percentageElements.forEach(el => {
+        const giftCard = el.closest('.gift-card');
+        if (!giftCard) return;
+        
+        // Skip cards without progress
+        if (giftCard.classList.contains('gift-card-no-progress')) return;
+        
+        const baseBar = giftCard.querySelector('.progress-fill-base');
+        const totalBase = parseInt(baseBar?.getAttribute('data-total-base') || '0');
+        
+        el.textContent = `${totalBase}%`;
     });
 }
 
@@ -321,8 +461,58 @@ function openGiftModal(giftType) {
     };
     
     modalTitle.textContent = `Contribuir a ${giftTitles[giftType] || 'el Regalo'}`;
+    
+    // Update bank information based on gift type
+    updateBankInfo(giftType);
+    
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
+}
+
+// Update bank information based on gift type
+function updateBankInfo(giftType) {
+    // Bank information for each gift type
+    const bankInfo = {
+        'muebles': {
+            // Camilo's account (Sofás)
+            bank: 'Bancolombia',
+            account: '04884246721',
+            key: '@otoya232',
+            holder: 'Camilo Otoya Cabrera',
+            document: 'Cédula 1018459232'
+        },
+        'luna-miel': {
+            // Sofia's account (Tiquetes)
+            bank: 'Nu',
+            account: '27590419',
+            key: '@SLC487',
+            holder: 'Sofia Llano Caldas',
+            document: 'Cédula 1020790487'
+        },
+        'fondo-general': {
+            // Camilo's account (Aporte general - default)
+            bank: 'Bancolombia',
+            account: '04884246721',
+            key: '@otoya232',
+            holder: 'Camilo Otoya Cabrera',
+            document: 'Cédula 1018459232'
+        }
+    };
+    
+    const info = bankInfo[giftType] || bankInfo['fondo-general'];
+    
+    // Update bank details
+    const bankNameEl = document.getElementById('bank-name');
+    const bankAccountEl = document.getElementById('bank-account');
+    const bankKeyEl = document.getElementById('bank-key');
+    const bankHolderEl = document.getElementById('bank-holder');
+    const bankDocumentEl = document.getElementById('bank-document');
+    
+    if (bankNameEl) bankNameEl.textContent = info.bank;
+    if (bankAccountEl) bankAccountEl.textContent = info.account;
+    if (bankKeyEl) bankKeyEl.textContent = info.key;
+    if (bankHolderEl) bankHolderEl.textContent = info.holder;
+    if (bankDocumentEl) bankDocumentEl.textContent = info.document;
 }
 
 function closeGiftModal() {
@@ -446,29 +636,57 @@ function updateProgressBarForGift(giftType, contributionAmount) {
                 
                 const cardTitle = cardTitleElement.textContent.trim();
                 if (cardTitle === giftType) {
-                    const progressBar = card.querySelector('.progress-fill');
+                    // Check if this is "Aporte general" (no progress bar)
+                    if (giftType === 'Aporte general') {
+                        // For "Aporte general", just highlight the card (no progress bar)
+                        if (contributionAmount > 0) {
+                            card.classList.add('has-contribution');
+                        }
+                        return; // Exit early for "Aporte general"
+                    }
+                    
+                    // For other gifts, update progress bar
+                    const baseBar = card.querySelector('.progress-fill-base');
+                    const contributionBar = card.querySelector('.progress-fill-contribution');
                     const progressPercentageElement = card.querySelector('.progress-percentage');
                     
-                    // Solo actualizar si existe la barra de progreso y el elemento de porcentaje
-                    if (progressBar && progressPercentageElement) {
-                        // Get current progress from data attribute or percentage text
-                        const currentProgressText = progressPercentageElement.textContent || '0%';
-                        const currentProgress = parseInt(currentProgressText.replace('%', '').trim()) || 0;
+                    // Solo actualizar si existen las barras y el elemento de porcentaje
+                    if (baseBar && contributionBar && progressPercentageElement) {
                         const targetAmount = GIFT_TARGETS[giftType] || 1000000;
                         
-                        // Calculate current amount from percentage
-                        const currentAmount = (currentProgress / 100) * targetAmount;
-                        const newAmount = currentAmount + contributionAmount;
+                        // Get current total base (base progress + differentiation)
+                        const totalBase = parseInt(baseBar.getAttribute('data-total-base') || '0');
                         
-                        // Calculate new progress percentage (0-100%)
-                        const newProgress = Math.min(Math.max((newAmount / targetAmount) * 100, 0), 100);
+                        // Get current contribution progress
+                        const currentContributionWidth = contributionBar.style.width || '0%';
+                        const currentContributionPercent = parseFloat(currentContributionWidth.replace('%', '')) || 0;
                         
-                        // Update progress bar
-                        progressBar.style.width = newProgress + '%';
-                        progressBar.setAttribute('data-progress', Math.round(newProgress));
+                        // Calculate contribution amount from current width
+                        const currentContributionAmount = (currentContributionPercent / 100) * targetAmount;
+                        const newContributionAmount = currentContributionAmount + contributionAmount;
                         
-                        // Update percentage text
-                        progressPercentageElement.textContent = `${Math.round(newProgress)}%`;
+                        // Calculate new contribution percentage (max to not exceed 100% total)
+                        const maxContributionPercent = Math.min(100 - totalBase, 100);
+                        const contributionPercent = Math.min(
+                            maxContributionPercent,
+                            (newContributionAmount / targetAmount) * 100
+                        );
+                        
+                        // Update contribution bar
+                        contributionBar.style.width = contributionPercent + '%';
+                        contributionBar.style.left = totalBase + '%';
+                        contributionBar.setAttribute('data-contribution', Math.round(contributionPercent));
+                        
+                        // Calculate total progress (base + differentiation + contribution)
+                        const totalProgress = Math.min(100, totalBase + contributionPercent);
+                        
+                        // Update percentage text (show total)
+                        progressPercentageElement.textContent = `${Math.round(totalProgress)}%`;
+                        
+                        // Add highlight class to card when contribution is made
+                        if (contributionPercent > 0) {
+                            card.classList.add('has-contribution');
+                        }
                     } else {
                         console.warn(`No se encontró barra de progreso para: ${giftType}`);
                     }

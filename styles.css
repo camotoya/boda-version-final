@@ -662,11 +662,31 @@ body {
     box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
+.gift-card.has-contribution {
+    border: 3px solid #d4af37;
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3), 0 0 20px rgba(212, 175, 55, 0.2);
+    animation: cardFloat 3s ease-in-out infinite;
+    background: linear-gradient(135deg, #fffef9, #fffcf0);
+}
+
+@keyframes cardFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
 .gift-card-special {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 2rem;
+}
+
+.gift-card-no-progress .progress-container {
+    display: none;
 }
 
 .gift-card-special .gift-description {
@@ -782,13 +802,40 @@ body {
     border-radius: 4px;
     overflow: hidden;
     margin-bottom: 0.5rem;
+    position: relative;
 }
 
-.progress-fill {
+.progress-fill-base {
+    position: absolute;
+    left: 0;
+    top: 0;
     height: 100%;
     background: linear-gradient(90deg, #d4af37, #f4e4bc);
     border-radius: 4px;
-    transition: width 0.3s ease;
+    transition: width 0.5s ease;
+    z-index: 1;
+}
+
+.progress-fill-contribution {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b35, #ff8c42);
+    border-radius: 4px;
+    transition: width 0.5s ease, left 0.5s ease;
+    z-index: 2;
+    box-shadow: 0 0 8px rgba(255, 107, 53, 0.6), 0 0 15px rgba(255, 140, 66, 0.4);
+    animation: contributionGlow 2s ease-in-out infinite;
+}
+
+@keyframes contributionGlow {
+    0%, 100% {
+        box-shadow: 0 0 8px rgba(255, 107, 53, 0.6), 0 0 15px rgba(255, 140, 66, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 12px rgba(255, 107, 53, 0.8), 0 0 20px rgba(255, 140, 66, 0.6);
+    }
 }
 
 .progress-text {
@@ -1658,7 +1705,21 @@ html {
     }
 }
 
-.progress-fill {
+.progress-fill-base {
     animation: progressFill 1s ease-out;
+}
+
+.progress-fill-contribution {
+    animation: progressFillContribution 0.8s ease-out;
+}
+
+@keyframes progressFillContribution {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
