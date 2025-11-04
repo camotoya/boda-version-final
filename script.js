@@ -357,13 +357,31 @@ const attendingRadios = document.querySelectorAll('input[name="attending"]');
 const additionalOptions = document.getElementById('additional-options');
 
 // Show/hide additional options based on attendance
+const menuSelect = document.getElementById('menu');
+const menuRequired = document.getElementById('menu-required');
+
 attendingRadios.forEach(radio => {
     radio.addEventListener('change', () => {
         if (radio.value === 'yes') {
             additionalOptions.style.display = 'block';
             additionalOptions.style.animation = 'fadeInUp 0.5s ease-out';
+            // Make menu required when attending
+            if (menuSelect) {
+                menuSelect.setAttribute('required', 'required');
+            }
+            if (menuRequired) {
+                menuRequired.style.display = 'inline';
+            }
         } else {
             additionalOptions.style.display = 'none';
+            // Remove required when not attending
+            if (menuSelect) {
+                menuSelect.removeAttribute('required');
+                menuSelect.value = '';
+            }
+            if (menuRequired) {
+                menuRequired.style.display = 'none';
+            }
         }
     });
 });
@@ -379,6 +397,22 @@ rsvpForm.addEventListener('submit', async (e) => {
     // Simple validation
     if (!data.name || !data.email || !data.phone || !data.attending) {
         showNotification('Por favor, completa todos los campos requeridos.', 'error');
+        return;
+    }
+    
+    // Validate menu selection if attending
+    if (data.attending === 'yes' && !data.menu) {
+        showNotification('Por favor, selecciona tu plato preferido.', 'error');
+        const menuField = document.getElementById('menu');
+        if (menuField) {
+            menuField.focus();
+            menuField.style.borderColor = '#dc3545';
+            // Reset border color when user selects an option
+            menuField.addEventListener('change', function resetBorder() {
+                this.style.borderColor = '';
+                this.removeEventListener('change', resetBorder);
+            }, { once: true });
+        }
         return;
     }
     
